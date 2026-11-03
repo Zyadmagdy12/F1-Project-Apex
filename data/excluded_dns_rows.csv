@@ -1,0 +1,21 @@
+Year,Round,EventName,Location,EventDate,EventFormat,Driver,TeamName,GridPosition,QualiPosition,best_quali_sec,FinishPosition,Status,FetchedAtUTC,RawTeamName
+2021,22,Abu Dhabi Grand Prix,Yas Island,2021-12-12,conventional,MAZ,Haas,,20.0,85.685,,Illness,2026-11-02 17:05:46 UTC,Haas F1 Team
+2022,2,Saudi Arabian Grand Prix,Jeddah,2022-03-27,conventional,MSC,Haas,,14.0,89.92,,Withdrew,2026-11-02 17:05:46 UTC,Haas F1 Team
+2023,14,Italian Grand Prix,Monza,2023-09-03,conventional,TSU,RB,11.0,11.0,81.594,20.0,Did not start,2026-11-02 18:55:17 UTC,AlphaTauri
+2023,15,Singapore Grand Prix,Marina Bay,2023-09-17,conventional,STR,Aston Martin,0.0,20.0,93.397,20.0,Withdrew,2026-11-02 18:55:21 UTC,Aston Martin
+2023,17,Qatar Grand Prix,Lusail,2023-10-08,sprint_shootout,SAI,Ferrari,12.0,12.0,85.328,20.0,Did not start,2026-11-02 18:55:31 UTC,Ferrari
+2023,19,Mexico City Grand Prix,Mexico City,2023-10-29,conventional,ALO,Aston Martin,13.0,13.0,78.738,18.0,Withdrew,2026-11-02 18:55:41 UTC,Aston Martin
+2023,20,São Paulo Grand Prix,São Paulo,2023-11-05,sprint_shootout,LEC,Ferrari,2.0,2.0,70.303,20.0,Did not start,2026-11-02 18:55:45 UTC,Ferrari
+2024,12,British Grand Prix,Silverstone,2024-07-07,conventional,GAS,Alpine,19.0,20.0,99.804,20.0,Did not start,2026-11-02 18:53:39 UTC,Alpine F1 Team
+2024,21,São Paulo Grand Prix,São Paulo,2024-11-03,sprint_qualifying,ALB,Williams,7.0,7.0,84.657,18.0,Did not start,2026-11-02 18:54:20 UTC,Williams
+2024,21,São Paulo Grand Prix,São Paulo,2024-11-03,sprint_qualifying,STR,Aston Martin,10.0,10.0,86.334,19.0,Did not start,2026-11-02 18:54:20 UTC,Aston Martin
+2025,11,Austrian Grand Prix,Spielberg,2025-06-29,conventional,SAI,Williams,19.0,19.0,65.582,20.0,Did not start,2026-11-02 17:15:40 UTC,Williams
+2025,12,British Grand Prix,Silverstone,2025-07-06,conventional,COL,Alpine,20.0,20.0,87.06,20.0,Did not start,2026-11-02 17:15:45 UTC,Alpine F1 Team
+2025,16,Italian Grand Prix,Monza,2025-09-07,conventional,HUL,Sauber_Audi,12.0,12.0,79.498,20.0,Did not start,2026-11-02 17:16:10 UTC,Sauber
+2026,1,Australian Grand Prix,Melbourne,2026-03-08,conventional,PIA,McLaren,5.0,5.0,79.38,21.0,Did not start,2026-11-02 17:12:03 UTC,McLaren
+2026,1,Australian Grand Prix,Melbourne,2026-03-08,conventional,HUL,Sauber_Audi,11.0,11.0,80.303,22.0,Did not start,2026-11-02 17:12:03 UTC,Audi
+2026,2,Chinese Grand Prix,Shanghai,2026-03-15,sprint_qualifying,PIA,McLaren,5.0,5.0,92.55,19.0,Did not start,2026-11-02 17:12:39 UTC,McLaren
+2026,2,Chinese Grand Prix,Shanghai,2026-03-15,sprint_qualifying,NOR,McLaren,6.0,6.0,92.608,20.0,Did not start,2026-11-02 17:12:39 UTC,McLaren
+2026,2,Chinese Grand Prix,Shanghai,2026-03-15,sprint_qualifying,BOR,Sauber_Audi,16.0,16.0,93.549,21.0,Did not start,2026-11-02 17:12:39 UTC,Audi
+2026,2,Chinese Grand Prix,Shanghai,2026-03-15,sprint_qualifying,ALB,Williams,22.0,18.0,94.772,22.0,Did not start,2026-11-02 17:12:39 UTC,Williams
+2026,5,Canadian Grand Prix,Montréal,2026-05-24,sprint_qualifying,LIN,RB,9.0,9.0,73.28,22.0,Did not start,2026-11-02 17:13:03 UTC,RB F1 Team

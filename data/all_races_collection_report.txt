@@ -1,0 +1,49 @@
+=================================================================
+F1 ALL-RACES DATA COLLECTION & VALIDATION REPORT (2021-2025)
+=================================================================
+
+Dataset File: C:\Users\zeyad magdy\.gemini\antigravity\scratch\F1-Mexico-Predictor\data\raw_all_races_data.csv
+Total Observations (Rows): 1020
+Total Grand Prix Events: 27
+Total Unique Drivers: 28
+Total Unique Teams: 13
+Duplicate Records (Year+Round+Driver): 0
+Empty Driver Abbreviations: 0
+Empty Event Names: 0
+Missing Finish Positions: 2
+
+--- Scheduled vs Collected Rounds per Season ---
+Season 2021: Scheduled = 22, Successful = 22, Failed = 0
+Season 2022: Scheduled = 22, Successful = 22, Failed = 0
+Season 2023: Scheduled = 22, Successful = 7, Failed = 15
+Season 2024: Scheduled = 24, Successful = 0, Failed = 24
+Season 2025: Scheduled = 24, Successful = 0, Failed = 24
+
+--- Actual Execution Times ---
+Season 2021: 277.50 seconds
+Season 2022: 122.29 seconds
+Season 2023: 52.23 seconds
+Season 2024: 12.32 seconds
+Season 2025: 12.25 seconds
+Total Execution Time: 476.59 seconds
+
+--- Missing Values Breakdown ---
+Year               0
+Round              0
+EventName          0
+Location           0
+Driver             0
+TeamName           0
+GridPosition       2
+QualiPosition      1
+best_quali_sec    13
+FinishPosition     2
+Status             0
+
+--- First 5 Records Sample ---
+ Year  Round          EventName Location Driver        TeamName  GridPosition  QualiPosition  best_quali_sec  FinishPosition   Status
+ 2021      1 Bahrain Grand Prix   Sakhir    HAM        Mercedes           2.0            2.0          89.385             1.0 Finished
+ 2021      1 Bahrain Grand Prix   Sakhir    VER Red Bull Racing           1.0            1.0          88.997             2.0 Finished
+ 2021      1 Bahrain Grand Prix   Sakhir    BOT        Mercedes           3.0            3.0          89.586             3.0 Finished
+ 2021      1 Bahrain Grand Prix   Sakhir    NOR         McLaren           7.0            7.0          89.974             4.0 Finished
+ 2021      1 Bahrain Grand Prix   Sakhir    PER Red Bull Racing           0.0           11.0          90.659             5.0 Finished

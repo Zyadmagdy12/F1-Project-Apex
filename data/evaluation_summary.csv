@@ -1,0 +1,13 @@
+Evaluation_Slice,Model,N_Races,MAE,Delta_MAE_vs_Grid,95%_CI,Spearman_Rho,Top3_Hit_%,Winner_Hit_%
+Overall_2024_2026 (66 Rounds),Baseline 1: Starting Grid (grid_pos),66,3.1299,0.0,"[+0.0000, +0.0000]",0.6883,68.69,60.61
+Overall_2024_2026 (66 Rounds),Baseline 2: Qualifying Rank (quali_pos),66,3.0697,-0.0602,"[-0.1205, +0.0027]",0.7049,66.67,62.12
+Overall_2024_2026 (66 Rounds),Baseline 3: Heuristic [grid + team_form_3] (Continuous),66,3.1445,0.0146,"[-0.0979, +0.1292]",0.6923,64.65,50.0
+Overall_2024_2026 (66 Rounds),Baseline 3: Heuristic [grid + team_form_3] (Rank-Ordered),66,3.1586,0.0287,"[-0.0788, +0.1384]",0.6923,64.65,50.0
+Overall_2024_2026 (66 Rounds),Full RidgeCV (Continuous yhat),66,3.0863,-0.0435,"[-0.1534, +0.0750]",0.7105,69.19,57.58
+Overall_2024_2026 (66 Rounds),Full RidgeCV (Intra-Race Rank-Ordered),66,3.0359,-0.0939,"[-0.2022, +0.0135]",0.7105,69.19,57.58
+Season_2026_Standalone (18 Rounds),Baseline 1: Starting Grid (grid_pos),18,3.2049,0.0,"[+0.0000, +0.0000]",0.6832,62.96,72.22
+Season_2026_Standalone (18 Rounds),Baseline 2: Qualifying Rank (quali_pos),18,3.0635,-0.1414,"[-0.2727, -0.0303]",0.7185,61.11,72.22
+Season_2026_Standalone (18 Rounds),Baseline 3: Heuristic [grid + team_form_3] (Continuous),18,3.2797,0.0748,"[-0.1002, +0.2555]",0.7002,59.26,61.11
+Season_2026_Standalone (18 Rounds),Baseline 3: Heuristic [grid + team_form_3] (Rank-Ordered),18,3.178,-0.0269,"[-0.1628, +0.1105]",0.7002,59.26,61.11
+Season_2026_Standalone (18 Rounds),Full RidgeCV (Continuous yhat),18,3.1717,-0.0333,"[-0.2277, +0.1719]",0.7129,64.81,72.22
+Season_2026_Standalone (18 Rounds),Full RidgeCV (Intra-Race Rank-Ordered),18,3.1035,-0.1015,"[-0.3051, +0.0916]",0.7129,64.81,72.22

@@ -1,0 +1,8 @@
+{
+  "status": "ALL_ROUNDS_COMPLETED",
+  "stop_reason": "Completed all queued rounds.",
+  "total_collected_rows": 2674,
+  "total_rounds_collected": 132,
+  "pending_rounds_count": 0,
+  "timestamp_utc": "2026-11-02T18:58:05.322194+00:00"
+}

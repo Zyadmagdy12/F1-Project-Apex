@@ -1,0 +1,26 @@
+# FastF1 local disk cache & virtual environments
+f1_cache/
+.venv/
+venv/
+ENV/
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Atomic temporary files & scratch scripts
+*.tmp.csv
+*.tmp
+task5_prompt.txt
+temp_prompt.txt
+diagnose.py
+diagnostic_results.txt
+qa_checks.py
+
+# OS / IDE artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

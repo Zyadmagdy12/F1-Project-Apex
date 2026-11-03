@@ -1,0 +1,23 @@
+Year,Round,EventName,Location,EventDate,EventFormat,Driver,TeamName,GridPosition,QualiPosition,best_quali_sec,FinishPosition,Status,FetchedAtUTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,VER,Red Bull,5.0,4.0,76.692,1.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,HAM,Ferrari,1.0,1.0,76.514,2.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,ANT,Mercedes,4.0,5.0,76.707,3.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,LEC,Ferrari,3.0,3.0,76.633,4.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,NOR,McLaren,6.0,6.0,76.728,5.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,RUS,Mercedes,2.0,2.0,76.523,6.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,PIA,McLaren,12.0,12.0,77.646,7.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,COL,Alpine F1 Team,11.0,11.0,77.64,8.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,LAW,RB F1 Team,22.0,8.0,77.029,9.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,GAS,Alpine F1 Team,9.0,9.0,77.153,10.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,BOR,Audi,13.0,13.0,77.68,11.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,HAD,Red Bull,7.0,7.0,76.9,12.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,HIR,Haas F1 Team,18.0,18.0,78.958,13.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,ALB,Williams,16.0,16.0,78.63,14.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,SAI,Williams,15.0,15.0,78.521,15.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,HUL,Audi,10.0,10.0,77.306,16.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,PER,Cadillac F1 Team,20.0,20.0,79.105,17.0,Finished,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,LIN,RB F1 Team,8.0,8.0,77.117,18.0,Retired,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,BEA,Haas F1 Team,14.0,14.0,78.083,19.0,Retired,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,BOT,Cadillac F1 Team,21.0,21.0,79.852,20.0,Retired,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,STR,Aston Martin,19.0,19.0,79.072,21.0,Retired,2026-11-02 17:10:17 UTC
+2026,19,Mexico City Grand Prix,Mexico City,2026-11-01,conventional,ALO,Aston Martin,17.0,17.0,78.908,22.0,Retired,2026-11-02 17:10:17 UTC
