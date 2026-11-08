@@ -139,8 +139,38 @@ Trained strictly on the **132 pre-Mexico rounds (2,654 rows)**, the pipeline gen
 
 By combining `data/clean_races.csv` (132 rounds) and `data/clean_target_mexico_2026.csv` (Round 19), the Brazil pipeline trains on all **133 historical rounds (2,676 driver-starts)** and computes the latest lagged rolling form entering **Round 20 (São Paulo Grand Prix, Nov 8, 2026)**.
 
-### Pre-Weekend Form & Power Rankings Entering Brazil 2026 (`--dry-run`)
-*(Evaluated using each driver's rolling 3-race qualifying baseline across Rounds 17–19 and updated post-Mexico rolling race form)*
+### Official Live Post-Qualifying Predictions (Saturday Classification + FIA Grid Penalties)
+*(Generated live using actual Saturday qualifying classifications and confirmed grid penalties: `data/brazil_2026_actual_quali.csv`)*
+
+| Rank | Driver | Team | Grid | Quali | Q_Gap% | `driver_form_3` | `team_form_3` | `team_dnf_rate_5` | Exp. Pos ($\hat{y}$) | $P(\text{Win})_{\text{LR}}$ | $P(\text{Win})_{\text{HGB}}$ | $P(\text{Pod})_{\text{HGB}}$ | $P(\text{Pod})_{\text{LR}}$ |
+|:---:|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **1** | **NOR** | McLaren | P1 | P1 | 0.84% | 4.67 | 5.50 | 10% | **3.51** | **66.6%** | **33.7%** | **53.0%** | **85.8%** |
+| **2** | **ANT** | Mercedes | P2 | P3 | 1.56% | **2.33** | 5.00 | 10% | **4.41** | **10.1%** | **10.0%** | **76.4%** | **72.4%** |
+| **3** | **RUS** | Mercedes | P7 | P2 | **0.00%** | 7.67 | 5.00 | 10% | **5.63** | **8.2%** | **12.9%** | **29.3%** | **48.9%** |
+| **4** | **LEC** | Ferrari | P14 | P4 | 1.54% | 2.67 | **3.33** | 0% | **6.72** | 6.1% | 27.9% | 23.6% | 27.6% |
+| **5** | **HAD** | Red Bull | P5 | P7 | 0.55% | 9.33 | 5.50 | 0% | **7.89** | 2.2% | 1.3% | 13.9% | 18.1% |
+| **6** | **LAW** | RB | P3 | P5 | 0.35% | 8.33 | 11.67 | 10% | **7.94** | 5.4% | 5.4% | 35.7% | 21.6% |
+| **7** | **HUL** | Sauber_Audi | P4 | P6 | 1.86% | 11.67 | 13.50 | 10% | **9.28** | 1.0% | 2.1% | 4.6% | 10.3% |
+| **8** | **PIA** | McLaren | P10 | P12 | 4.18% | 6.33 | 5.50 | 10% | **9.37** | 0.1% | 0.1% | 2.5% | 5.2% |
+| **9** | **HAM** | Ferrari | P20 | P11 | 3.75% | 4.00 | **3.33** | 0% | **10.02** | 0.1% | 0.3% | 2.4% | 2.6% |
+| **10** | **BEA** | Haas | P6 | P8 | 2.75% | 17.67 | 15.50 | 20% | **11.11** | 0.1% | 0.8% | 0.1% | 2.7% |
+| **11** | **ALO** | Aston Martin | P8 | P9 | 2.68% | 18.00 | 18.33 | 50% | **11.96** | 0.1% | 1.4% | 0.1% | 1.3% |
+| **12** | **VER** | Red Bull | P21 | P16 | 5.18% | **1.67** | 5.50 | 0% | **12.01** | 0.0% | 0.5% | 40.2% | 0.6% |
+| **13** | **ALB** | Williams | P9 | P10 | 2.51% | 16.33 | 16.00 | 30% | **12.06** | 0.1% | 1.4% | 0.1% | 1.1% |
+| **14** | **LIN** | RB | P12 | P14 | 5.70% | 15.00 | 11.67 | 10% | **12.66** | 0.0% | 0.2% | 1.0% | 0.6% |
+| **15** | **HIR** | Haas | P11 | P13 | 5.50% | 13.00 | 15.50 | 20% | **12.75** | 0.0% | 0.2% | 0.2% | 0.7% |
+| **16** | **SAI** | Williams | P13 | P15 | 5.81% | 15.67 | 16.00 | 30% | **13.97** | 0.0% | 0.1% | 0.3% | 0.2% |
+| **17** | **GAS** | Alpine | P16 | P18 | 7.00% | 10.33 | 13.50 | 40% | **14.42** | 0.0% | 0.6% | 1.5% | 0.1% |
+| **18** | **COL** | Alpine | P15 | P17 | 7.00% | 16.67 | 13.50 | 40% | **14.68** | 0.0% | 0.2% | 1.5% | 0.1% |
+| **19** | **STR** | Aston Martin | P17 | P19 | 7.00% | 18.67 | 18.33 | 50% | **16.44** | 0.0% | 0.1% | 5.3% | 0.0% |
+| **20** | **BOR** | Sauber_Audi | P19 | P22 | 7.00% | 15.33 | 13.50 | 10% | **17.08** | 0.0% | 0.1% | 0.8% | 0.0% |
+| **21** | **BOT** | Cadillac | P18 | P20 | 7.00% | 19.67 | 18.67 | 40% | **17.68** | 0.0% | 0.2% | 3.8% | 0.0% |
+| **22** | **PER** | Cadillac | P22 | P21 | 7.00% | 17.67 | 18.67 | 40% | **18.39** | 0.0% | 0.2% | 3.8% | 0.0% |
+
+![2026 Brazil GP Qualifying Gap vs Predicted Finish Position](outputs/brazil_2026_quali_vs_predicted.png)
+
+### Pre-Weekend Form & Power Rankings Entering Brazil 2026 (Historical Simulation `--dry-run`)
+*(Evaluated prior to Saturday qualifying using each driver's rolling 3-race qualifying baseline across Rounds 17–19)*
 
 | Rank | Driver | Team | Baseline Grid | Baseline Q_Gap% | `driver_form_3` | `team_form_3` | `team_dnf_rate_5` | Exp. Pos ($\hat{y}$) | $P(\text{Win})_{\text{LR}}$ | $P(\text{Win})_{\text{HGB}}$ | $P(\text{Pod})_{\text{HGB}}$ | $P(\text{Pod})_{\text{LR}}$ |
 |:---:|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|

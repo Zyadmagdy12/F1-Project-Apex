@@ -1,0 +1,23 @@
+Driver,TeamName,QualiPosition,best_quali_sec,GridPosition
+NOR,McLaren,1,87.470,1
+RUS,Mercedes,2,86.745,7
+ANT,Mercedes,3,88.095,2
+LEC,Ferrari,4,88.082,14
+LAW,RB,5,87.049,3
+HUL,Sauber_Audi,6,88.361,4
+HAD,Red Bull,7,87.218,5
+BEA,Haas,8,89.130,6
+ALO,Aston Martin,9,89.072,8
+ALB,Williams,10,88.918,9
+HAM,Ferrari,11,90.001,20
+PIA,McLaren,12,90.369,10
+HIR,Haas,13,91.515,11
+LIN,RB,14,91.687,12
+SAI,Williams,15,91.785,13
+VER,Red Bull,16,91.238,21
+COL,Alpine,17,93.327,15
+GAS,Alpine,18,93.449,16
+STR,Aston Martin,19,93.653,17
+BOT,Cadillac,20,93.774,18
+PER,Cadillac,21,94.509,22
+BOR,Sauber_Audi,22,101.564,19

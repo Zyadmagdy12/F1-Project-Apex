@@ -234,79 +234,299 @@ def build_dry_run_brazil_skeleton(history_133_df: pd.DataFrame) -> pd.DataFrame:
     return brazil
 
 
-def fetch_live_brazil_qualifying() -> pd.DataFrame:
+def parse_lap_time_str(time_val) -> float:
+    """Parses lap time into float seconds from either float/int or string formats ('1:09.500', '70.845')."""
+    if pd.isna(time_val) or time_val is None:
+        return np.nan
+    s = str(time_val).strip()
+    if not s or s.lower() in ['nan', 'none', '']:
+        return np.nan
+    try:
+        return float(s)
+    except ValueError:
+        pass
+    if ':' in s:
+        try:
+            parts = s.split(':')
+            if len(parts) == 2:
+                mins = float(parts[0])
+                secs = float(parts[1])
+                return mins * 60.0 + secs
+        except Exception:
+            pass
+    return np.nan
+
+
+def load_manual_quali_csv(csv_path: str, history_133_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Fetches live 2026 Round 20 (São Paulo Grand Prix) Qualifying ('Q') results via FastF1
-    and cleans them using Stage 2 standardization rules.
+    Tier 3 Fallback: Loads manual Qualifying order from a CSV file.
+    Supports either float seconds or 'M:SS.mmm' format for best_quali_sec.
+    If best_quali_sec is missing, smoothly synthesizes realistic lap gaps from QualiPosition.
+    """
+    if not os.path.isabs(csv_path):
+        csv_path = os.path.join(BASE_DIR, csv_path)
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Manual qualifying CSV not found at: {csv_path}")
+
+    print(f"Loading manual Qualifying dataset from: {csv_path} (Tier 3 Manual Input)")
+    df_manual = pd.read_csv(csv_path)
+
+    required_cols = ['Driver']
+    for c in required_cols:
+        if c not in df_manual.columns:
+            raise ValueError(f"Manual qualifying CSV must contain at least a '{c}' column!")
+
+    # Reference roster from Round 19 (Mexico 2026)
+    r19 = history_133_df[(history_133_df['Year'] == 2026) & (history_133_df['Round'] == 19)].copy()
+    roster_map = dict(zip(r19['Driver'], r19['TeamName']))
+    raw_roster_map = dict(zip(r19['Driver'], r19['RawTeamName']))
+
+    df_manual['Driver'] = df_manual['Driver'].astype(str).str.strip().str.upper()
+    if 'TeamName' not in df_manual.columns:
+        df_manual['TeamName'] = df_manual['Driver'].map(roster_map)
+    else:
+        df_manual['TeamName'] = df_manual['TeamName'].fillna(df_manual['Driver'].map(roster_map))
+
+    df_manual['RawTeamName'] = df_manual['Driver'].map(raw_roster_map).fillna(df_manual['TeamName'])
+
+    # Parse best_quali_sec
+    if 'best_quali_sec' in df_manual.columns:
+        df_manual['parsed_best_q'] = df_manual['best_quali_sec'].apply(parse_lap_time_str)
+    else:
+        df_manual['parsed_best_q'] = np.nan
+
+    # Parse QualiPosition / GridPosition
+    if 'QualiPosition' in df_manual.columns:
+        df_manual['q_pos_num'] = pd.to_numeric(df_manual['QualiPosition'], errors='coerce')
+    else:
+        df_manual['q_pos_num'] = np.nan
+
+    # If q_pos_num is missing, rank by parsed_best_q or original row order
+    if df_manual['q_pos_num'].isna().all():
+        if df_manual['parsed_best_q'].notna().any():
+            df_manual.sort_values(by=['parsed_best_q', 'Driver'], na_position='last', inplace=True)
+        df_manual['q_pos_num'] = np.arange(1, len(df_manual) + 1, dtype=float)
+    else:
+        df_manual.sort_values(by=['q_pos_num', 'parsed_best_q', 'Driver'], na_position='last', inplace=True)
+
+    df_manual.reset_index(drop=True, inplace=True)
+    n_drivers = len(df_manual)
+    df_manual['quali_pos'] = np.arange(1, n_drivers + 1, dtype=float)
+    df_manual['QualiPosition'] = df_manual['quali_pos']
+
+    # Synthesize best_quali_sec if blank
+    if df_manual['parsed_best_q'].isna().all():
+        print("  Notice: No lap times provided in manual CSV. Synthesizing realistic Interlagos gaps (70.0s pole)...")
+        # Realistic qualifying gap distribution (approx 0.05% to 0.15% per position)
+        gaps_pct = (df_manual['quali_pos'] - 1.0) * 0.18
+        df_manual['best_quali_sec'] = 70.0 * (1.0 + gaps_pct / 100.0)
+    elif df_manual['parsed_best_q'].isna().any():
+        pole_time = df_manual['parsed_best_q'].dropna().min()
+        max_valid_time = df_manual['parsed_best_q'].dropna().max()
+        for idx in df_manual[df_manual['parsed_best_q'].isna()].index:
+            df_manual.loc[idx, 'parsed_best_q'] = max_valid_time + (idx + 1) * 0.1
+        df_manual['best_quali_sec'] = df_manual['parsed_best_q']
+    else:
+        df_manual['best_quali_sec'] = df_manual['parsed_best_q']
+
+    # GridPosition
+    if 'GridPosition' in df_manual.columns and df_manual['GridPosition'].notna().any():
+        df_manual['grid_pos'] = pd.to_numeric(df_manual['GridPosition'], errors='coerce').fillna(df_manual['quali_pos'])
+    else:
+        df_manual['grid_pos'] = df_manual['quali_pos'].copy()
+
+    df_manual['GridPosition'] = df_manual['grid_pos']
+    df_manual['Year'] = 2026
+    df_manual['Round'] = 20
+    df_manual['EventName'] = 'São Paulo Grand Prix'
+    df_manual['Location'] = 'São Paulo'
+    df_manual['EventDate'] = '2026-11-08'
+    df_manual['EventFormat'] = 'conventional'
+    df_manual['Q1_sec'] = df_manual['best_quali_sec']
+    df_manual['Q2_sec'] = np.nan
+    df_manual['Q3_sec'] = np.nan
+    df_manual['pitlane_start'] = (df_manual['grid_pos'] <= 0).astype(int)
+    df_manual['no_quali_time'] = 0
+    df_manual['FinishPosition'] = np.nan
+    df_manual['Status'] = 'Pending'
+    df_manual['Points'] = np.nan
+    df_manual['is_dnf'] = np.nan
+    df_manual['is_anomaly_race'] = 0
+    df_manual['FetchedAtUTC'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    return df_manual
+
+
+def fetch_live_brazil_qualifying(history_133_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    3-Tier Ingestion Pipeline for Brazil 2026 Qualifying:
+      - Tier 1: Ergast / Jolpica Official Results via FastF1 session.results
+      - Tier 2: F1 Live Timing stream via FastF1 session.laps (bypassing Ergast delay)
     """
     import fastf1
     os.makedirs(CACHE_DIR, exist_ok=True)
-    fastf1.Cache.enable_cache(CACHE_DIR)
+    try:
+        fastf1.Cache.enable_cache(CACHE_DIR)
+    except Exception:
+        pass
+
+    # Reference roster from Round 19
+    r19 = history_133_df[(history_133_df['Year'] == 2026) & (history_133_df['Round'] == 19)].copy()
+    roster_drivers = list(r19['Driver'])
+    roster_map = dict(zip(r19['Driver'], r19['TeamName']))
+    raw_roster_map = dict(zip(r19['Driver'], r19['RawTeamName']))
 
     print("Connecting to FastF1 for 2026 Round 20 (São Paulo Grand Prix) Qualifying ('Q')...")
     session = fastf1.get_session(2026, 20, 'Q')
-    session.load(laps=False, telemetry=False, weather=False, messages=False)
 
-    if session.results is None or session.results.empty:
-        raise RuntimeError(
-            "2026 São Paulo GP Qualifying ('Q') results are not yet available in FastF1. "
-            "Run with '--dry-run' before Qualifying, or run again after Qualifying concludes on Nov 7, 2026."
+    # -------------------------------------------------------------
+    # TIER 1: Official Session Results (Ergast / Jolpica)
+    # -------------------------------------------------------------
+    print("\n[Tier 1] Checking official session.results (Ergast / Jolpica)...")
+    try:
+        session.load(laps=False, telemetry=False, weather=False, messages=False)
+        tier1_ready = (
+            session.results is not None
+            and not session.results.empty
+            and (session.results['Position'].notna().any() or session.results['Q1'].notna().any())
         )
+    except Exception as e:
+        print(f"  Tier 1 load check encountered error: {e}")
+        tier1_ready = False
 
-    res = session.results.copy()
-    if res['Position'].isna().all() and res['Q1'].isna().all():
-        raise RuntimeError(
-            "2026 São Paulo GP Qualifying ('Q') session exists in schedule but contains no recorded lap times yet. "
-            "Run with '--dry-run' for Pre-Weekend Power Rankings."
-        )
+    if tier1_ready:
+        print("  [SUCCESS] Tier 1: Official Qualifying results loaded successfully from Ergast!")
+        res = session.results.copy()
+        rows = []
+        fetched_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        for _, r in res.iterrows():
+            drv = str(r.get('Abbreviation', '')).strip().upper()
+            if not drv:
+                continue
+            raw_team = str(r.get('TeamName', '')).strip()
+            q1_s = r['Q1'].total_seconds() if pd.notna(r.get('Q1')) else np.nan
+            q2_s = r['Q2'].total_seconds() if pd.notna(r.get('Q2')) else np.nan
+            q3_s = r['Q3'].total_seconds() if pd.notna(r.get('Q3')) else np.nan
+            valid_qs = [t for t in [q1_s, q2_s, q3_s] if pd.notna(t)]
+            best_q = min(valid_qs) if valid_qs else np.nan
+            q_pos = float(r['Position']) if pd.notna(r.get('Position')) else np.nan
 
-    rows = []
-    fetched_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    for _, r in res.iterrows():
-        drv = str(r.get('Abbreviation', '')).strip()
-        if not drv:
-            continue
-        raw_team = str(r.get('TeamName', '')).strip()
-        q1_s = r['Q1'].total_seconds() if pd.notna(r.get('Q1')) else np.nan
-        q2_s = r['Q2'].total_seconds() if pd.notna(r.get('Q2')) else np.nan
-        q3_s = r['Q3'].total_seconds() if pd.notna(r.get('Q3')) else np.nan
-        valid_qs = [t for t in [q1_s, q2_s, q3_s] if pd.notna(t)]
-        best_q = min(valid_qs) if valid_qs else np.nan
-        q_pos = float(r['Position']) if pd.notna(r.get('Position')) else np.nan
+            rows.append({
+                'Year': 2026,
+                'Round': 20,
+                'EventName': 'São Paulo Grand Prix',
+                'Location': 'São Paulo',
+                'EventDate': '2026-11-08',
+                'EventFormat': 'conventional',
+                'Driver': drv,
+                'RawTeamName': raw_team if raw_team else raw_roster_map.get(drv, drv),
+                'TeamName': clean_mod.TEAM_MAPPING.get(raw_team, raw_team) if raw_team else roster_map.get(drv, drv),
+                'GridPosition': q_pos,
+                'QualiPosition': q_pos,
+                'Q1_sec': q1_s,
+                'Q2_sec': q2_s,
+                'Q3_sec': q3_s,
+                'best_quali_sec': best_q,
+                'FinishPosition': np.nan,
+                'Status': 'Pending',
+                'Points': np.nan,
+                'is_dnf': np.nan,
+                'pitlane_start': 0,
+                'no_quali_time': 0 if pd.notna(best_q) else 1,
+                'is_anomaly_race': 0,
+                'FetchedAtUTC': fetched_utc
+            })
+        df_live = pd.DataFrame(rows)
+        n_drivers = len(df_live)
+        df_live.sort_values(by=['QualiPosition', 'best_quali_sec', 'Driver'], na_position='last', inplace=True)
+        df_live['quali_pos'] = np.arange(1, n_drivers + 1, dtype=float)
+        df_live['grid_pos'] = df_live['quali_pos'].copy()
+        df_live.reset_index(drop=True, inplace=True)
+        return df_live
 
-        rows.append({
-            'Year': 2026,
-            'Round': 20,
-            'EventName': 'São Paulo Grand Prix',
-            'Location': 'São Paulo',
-            'EventDate': '2026-11-08',
-            'EventFormat': 'conventional',
-            'Driver': drv,
-            'RawTeamName': raw_team,
-            'TeamName': clean_mod.TEAM_MAPPING.get(raw_team, raw_team),
-            'GridPosition': q_pos,
-            'QualiPosition': q_pos,
-            'Q1_sec': q1_s,
-            'Q2_sec': q2_s,
-            'Q3_sec': q3_s,
-            'best_quali_sec': best_q,
-            'FinishPosition': np.nan,
-            'Status': 'Pending',
-            'Points': np.nan,
-            'is_dnf': np.nan,
-            'pitlane_start': 0,
-            'no_quali_time': 0 if pd.notna(best_q) else 1,
-            'is_anomaly_race': 0,
-            'FetchedAtUTC': fetched_utc
-        })
+    print("  [Tier 1 Unavailable] session.results not yet populated by Ergast.")
 
-    df_live = pd.DataFrame(rows)
-    n_drivers = len(df_live)
-    df_live.sort_values(by=['QualiPosition', 'best_quali_sec', 'Driver'], na_position='last', inplace=True)
-    df_live['quali_pos'] = np.arange(1, n_drivers + 1, dtype=float)
-    df_live['grid_pos'] = df_live['quali_pos'].copy()
-    df_live.reset_index(drop=True, inplace=True)
-    return df_live
+    # -------------------------------------------------------------
+    # TIER 2: Direct F1 Live Timing Laps Stream (Bypassing Ergast Delay)
+    # -------------------------------------------------------------
+    print("\n[Tier 2] Attempting direct F1 Live Timing stream via session.load(laps=True)...")
+    try:
+        session.load(laps=True, telemetry=False, weather=False, messages=False)
+        tier2_ready = session.laps is not None and not session.laps.empty
+    except Exception as e:
+        print(f"  Tier 2 live timing check encountered error: {e}")
+        tier2_ready = False
+
+    if tier2_ready and session.laps is not None and not session.laps.empty:
+        print("  [SUCCESS] Tier 2: F1 Live Timing lap stream detected! Extracting fastest laps per driver...")
+        laps = session.laps.copy()
+        # Filter for valid laps with positive lap time
+        laps['LapTimeSec'] = laps['LapTime'].dt.total_seconds()
+        valid_laps = laps[laps['LapTimeSec'] > 0].copy()
+
+        # Group by driver and find minimum lap time
+        best_times = valid_laps.groupby('Driver')['LapTimeSec'].min().to_dict()
+
+        if best_times:
+            print(f"  Extracted valid qualifying lap times for {len(best_times)} drivers from live timing stream.")
+            rows = []
+            fetched_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            for drv in roster_drivers:
+                best_t = best_times.get(drv, np.nan)
+                team = roster_map.get(drv, 'Unknown')
+                raw_team = raw_roster_map.get(drv, team)
+                rows.append({
+                    'Year': 2026,
+                    'Round': 20,
+                    'EventName': 'São Paulo Grand Prix',
+                    'Location': 'São Paulo',
+                    'EventDate': '2026-11-08',
+                    'EventFormat': 'conventional',
+                    'Driver': drv,
+                    'RawTeamName': raw_team,
+                    'TeamName': clean_mod.TEAM_MAPPING.get(raw_team, team),
+                    'GridPosition': np.nan,
+                    'QualiPosition': np.nan,
+                    'Q1_sec': best_t,
+                    'Q2_sec': np.nan,
+                    'Q3_sec': np.nan,
+                    'best_quali_sec': best_t,
+                    'FinishPosition': np.nan,
+                    'Status': 'Pending',
+                    'Points': np.nan,
+                    'is_dnf': np.nan,
+                    'pitlane_start': 0,
+                    'no_quali_time': 0 if pd.notna(best_t) else 1,
+                    'is_anomaly_race': 0,
+                    'FetchedAtUTC': fetched_utc
+                })
+            df_live = pd.DataFrame(rows)
+            # Sort by fastest lap time; drivers without times go to the back
+            df_live.sort_values(by=['best_quali_sec', 'Driver'], na_position='last', inplace=True)
+            df_live.reset_index(drop=True, inplace=True)
+            n_drivers = len(df_live)
+            df_live['quali_pos'] = np.arange(1, n_drivers + 1, dtype=float)
+            df_live['grid_pos'] = df_live['quali_pos'].copy()
+            df_live['QualiPosition'] = df_live['quali_pos']
+            df_live['GridPosition'] = df_live['grid_pos']
+            return df_live
+
+    # -------------------------------------------------------------
+    # If both Tier 1 and Tier 2 fail, raise clear actionable guidance
+    # -------------------------------------------------------------
+    template_path = os.path.join(DATA_DIR, 'brazil_2026_manual_quali_template.csv')
+    raise RuntimeError(
+        "\n========================================================================================\n"
+        "2026 São Paulo GP Qualifying results are not yet available upstream in FastF1!\n"
+        "  - Tier 1 (Ergast/Jolpica session.results) is still empty.\n"
+        "  - Tier 2 (F1 Live Timing stream session.laps) has no recorded laps yet.\n\n"
+        f"To proceed immediately without waiting for API updates, use Tier 3 Manual Input:\n"
+        f"  1. Edit the pre-filled 22-driver template at:\n"
+        f"     file:///{template_path.replace(os.sep, '/')}\n"
+        f"  2. Re-run with:\n"
+        f"     python src/6_predict_brazil_live.py --manual-quali-csv data/brazil_2026_manual_quali_template.csv\n"
+        "========================================================================================"
+    )
 
 
 def plot_brazil_predictions(df_pred: pd.DataFrame, save_path: str, is_dry_run: bool = False):
@@ -315,7 +535,7 @@ def plot_brazil_predictions(df_pred: pd.DataFrame, save_path: str, is_dry_run: b
 
     ax.set_ylim(23.2, 0.2)
     ax.set_yticks(np.arange(1, 23))
-    max_gap = max(4.5, float(df_pred['quali_gap_pct'].max()) + 0.8)
+    max_gap = max(4.5, float(df_pred['quali_gap_pct'].max()) + 1.85)
     ax.set_xlim(-0.25, max_gap)
 
     top3_drivers = set(df_pred.nsmallest(3, 'pred_ridge_rank')['Driver'])
@@ -344,9 +564,24 @@ def plot_brazil_predictions(df_pred: pd.DataFrame, save_path: str, is_dry_run: b
         pred_y = int(y)
         label = f"{drv} (Grid P{int(row['grid_pos'])} → Pred P{pred_y} | Pod {row['p_pod_hgb']*100:.0f}%)"
         fontweight = 'bold' if drv in top3_drivers else 'normal'
+
+        # Fine-tune horizontal and vertical label offsets for zero visual collision
+        dx, dy = 0.09, 0.0
+        if drv == 'NOR':
+            dx, dy = 0.12, -0.05
+        elif drv == 'ANT':
+            dx, dy = 0.12, 0.0
+        elif drv == 'RUS':
+            dx, dy = 0.12, 0.0
+        elif drv == 'LEC':
+            dx, dy = 0.10, 0.0
+        elif drv in ['GAS', 'COL', 'STR', 'BOR', 'BOT', 'PER']:
+            dx = 0.10
+
         ax.annotate(
-            label, (x, y), xytext=(x + 0.08, y),
+            label, (x, y), xytext=(x + dx, y + dy),
             fontsize=8.5, fontweight=fontweight, color='#111111',
+            va='center',
             arrowprops=dict(arrowstyle='-', color='#888888', lw=0.5, alpha=0.6)
         )
 
@@ -380,6 +615,12 @@ def main():
         default="",
         help="Optional comma-separated starting grid overrides, e.g. 'VER:10,LAW:22' (use 0 for pitlane start)."
     )
+    parser.add_argument(
+        '--manual-quali-csv',
+        type=str,
+        default="",
+        help="Optional path to manual Qualifying results CSV (Tier 3 fallback)."
+    )
     args = parser.parse_args()
 
     print("=================================================================")
@@ -397,13 +638,16 @@ def main():
     print(f"Combined historical training corpus: {len(history_133)} driver-starts across {n_rounds_hist} rounds (2021 R1 – 2026 R19 Mexico).")
     assert n_rounds_hist == 133 and len(history_133) == 2676, "Expected exactly 133 rounds and 2,676 rows!"
 
-    # 2. Construct Round 20 Brazil input (Dry-Run vs Live Qualifying)
+    # 2. Construct Round 20 Brazil input (Dry-Run vs Manual CSV vs Live FastF1)
     if args.dry_run:
         print("Mode: --dry-run (Pre-Qualifying Readiness Test using 3-race rolling qualifying baseline R17-R19)")
         brazil_raw = build_dry_run_brazil_skeleton(history_133)
+    elif args.manual_quali_csv:
+        print(f"Mode: MANUAL QUALIFYING INGESTION (Tier 3 from: {args.manual_quali_csv})")
+        brazil_raw = load_manual_quali_csv(args.manual_quali_csv, history_133)
     else:
-        print("Mode: LIVE QUALIFYING INGESTION (2026 Round 20 São Paulo GP)")
-        brazil_raw = fetch_live_brazil_qualifying()
+        print("Mode: LIVE QUALIFYING INGESTION (2026 Round 20 São Paulo GP — Tiers 1 & 2)")
+        brazil_raw = fetch_live_brazil_qualifying(history_133)
 
     # Apply optional grid penalty overrides before feature engineering
     overrides = parse_grid_overrides(args.grid_overrides)

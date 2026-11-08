@@ -334,6 +334,21 @@ Build a production-ready prediction script for Round 20 (2026 São Paulo Grand P
   4. `ANT` (Mercedes): Baseline Grid P4 | `driver_form_3 = 2.33` | `team_form_3 = 5.00` | `Exp_Pos = 5.14` | $P(\text{Win})_{\text{LR}} = 10.4\%$, $P(\text{Win})_{\text{HGB}} = 18.8\%$ | $P(\text{Pod})_{\text{HGB}} = 56.5\%$
   5. `RUS` (Mercedes): Baseline Grid P5 | `driver_form_3 = 7.67` | `team_form_3 = 5.00` | `Exp_Pos = 6.28` | $P(\text{Win})_{\text{LR}} = 2.4\%$ | $P(\text{Pod})_{\text{LR}} = 22.8\%$
 
+### Official Live Post-Qualifying Predictions (Saturday Classification + Confirmed FIA Grid Penalties)
+- **Ingestion Mode:** Tier 3 Fallback (`data/brazil_2026_actual_quali.csv`) bypassing Ergast API delay.
+- **Official Starting Grid Key Penalties Handled:**
+  - `RUS`: Qualified P2 $\to$ Started P7 (5-place grid penalty).
+  - `LEC`: Qualified P4 $\to$ Started P14 (10-place grid penalty).
+  - `VER`: Qualified P16 $\to$ Started P21 (engine penalty).
+  - `HAM`: Qualified P11 $\to$ Started P20 (engine penalty).
+- **Official Model Top-3 Podium Projections:**
+  1. `NOR` (McLaren): Grid P1 | `Exp_Pos = 3.51` | $P(\text{Win})_{\text{LR}} = 66.6\%$, $P(\text{Win})_{\text{HGB}} = 33.7\%$ | $P(\text{Pod})_{\text{HGB}} = 53.0\%$, $P(\text{Pod})_{\text{LR}} = 85.8\%$
+  2. `ANT` (Mercedes): Grid P2 | `Exp_Pos = 4.41` | $P(\text{Win})_{\text{LR}} = 10.1\%$, $P(\text{Win})_{\text{HGB}} = 10.0\%$ | $P(\text{Pod})_{\text{HGB}} = 76.4\%$, $P(\text{Pod})_{\text{LR}} = 72.4\%$
+  3. `RUS` (Mercedes): Grid P7 | `Exp_Pos = 5.63` | $P(\text{Win})_{\text{LR}} = 8.2\%$, $P(\text{Win})_{\text{HGB}} = 12.9\%$ | $P(\text{Pod})_{\text{HGB}} = 29.3\%$, $P(\text{Pod})_{\text{LR}} = 48.9\%$
+- **Generated Artifacts:**
+  - [`data/brazil_2026_live_predictions.csv`](data/brazil_2026_live_predictions.csv): Complete 22-driver official live predictions.
+  - [`outputs/brazil_2026_quali_vs_predicted.png`](outputs/brazil_2026_quali_vs_predicted.png): Publication-grade scatter plot with zero text label overlap.
+
 ---
 
 ## Stage 8: Packaging, Reproducibility & Portfolio Documentation
