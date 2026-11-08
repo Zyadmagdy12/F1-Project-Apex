@@ -1,0 +1,128 @@
+{
+  "project": "Project Apex \u2014 Formula 1 Statistical Prediction & Ranking Pipeline",
+  "model_version": "Project_Apex_v2.0",
+  "created_at_utc": "2026-11-08T05:00:00Z",
+  "random_seed": 42,
+  "software_environment": {
+    "python_version": "3.12.2 (tags/v3.12.2:6abddd9, Feb  6 2024, 21:26:36) [MSC v.1937 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy_version": "2.5.4",
+    "pandas_version": "2.3.3",
+    "scipy_version": "1.18.1",
+    "scikit_learn_version": "1.9.1"
+  },
+  "models": {
+    "RidgeCV_Conformal": {
+      "class": "LeakageSafeRidgeConformalModel",
+      "features": [
+        "Qualifying_Rank",
+        "Starting_Grid_Position",
+        "Delta_Q_to_G",
+        "Teammate_Qualifying_Delta",
+        "Driver_Form",
+        "Team_Form",
+        "Driver_Track_History",
+        "Driver_Track_Missing",
+        "Circuit_Overtake_Difficulty_Index",
+        "Circuit_Attrition_Index"
+      ],
+      "alphas": "np.logspace(-1, 3, 25)",
+      "conformal_level": 0.9,
+      "conformal_method": "Finite-sample split conformal quantile on strictly prior out-of-sample walk-forward residuals"
+    },
+    "Monotonic_HGB_Win_and_Podium": {
+      "class": "MonotonicHGBClassifier",
+      "features": [
+        "Qualifying_Rank",
+        "Starting_Grid_Position",
+        "Delta_Q_to_G",
+        "Teammate_Qualifying_Delta",
+        "Driver_Form",
+        "Team_Form",
+        "Driver_Track_History",
+        "Driver_Track_Missing",
+        "Circuit_Overtake_Difficulty_Index",
+        "Circuit_Attrition_Index"
+      ],
+      "monotonic_cst": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hyperparameters": {
+        "max_depth": 3,
+        "min_samples_leaf": 20,
+        "l2_regularization": 1.0,
+        "learning_rate": 0.05,
+        "max_iter": 100
+      }
+    },
+    "Calibrated_LogisticRegression": {
+      "class": "CalibratedBinaryLogisticModel",
+      "features": [
+        "Qualifying_Rank",
+        "Starting_Grid_Position",
+        "Delta_Q_to_G",
+        "Teammate_Qualifying_Delta",
+        "Driver_Form",
+        "Team_Form",
+        "Driver_Track_History",
+        "Driver_Track_Missing",
+        "Circuit_Overtake_Difficulty_Index",
+        "Circuit_Attrition_Index"
+      ],
+      "hyperparameters": {
+        "C": 0.5,
+        "race_normalization": "proportional (Win sum=1.0) / log-odds shift (Podium sum=3.0)"
+      }
+    },
+    "Calibrated_DNF_Hazard_Classifier": {
+      "class": "CalibratedDNFHazardModel",
+      "features": [
+        "Starting_Grid_Position",
+        "Qualifying_Rank",
+        "Constructor_DNF_Rate_Smoothed",
+        "Constructor_DNF_EWMA",
+        "Constructor_Attributed_Mech_Rate",
+        "Driver_DNF_Rate_Smoothed",
+        "Driver_DNF_EWMA",
+        "Driver_Attributed_Incident_Rate",
+        "Circuit_Attrition_Index",
+        "Circuit_Overtake_Difficulty_Index"
+      ],
+      "calibration_methods_compared": [
+        "platt_sigmoid",
+        "isotonic"
+      ],
+      "selected_calibration_method": "platt_sigmoid"
+    },
+    "Plackett_Luce_Listwise_Ranking_Model": {
+      "class": "PlackettLuceRankingModel",
+      "features": [
+        "Qualifying_Rank",
+        "Starting_Grid_Position",
+        "Delta_Q_to_G",
+        "Teammate_Qualifying_Delta",
+        "Driver_Form",
+        "Team_Form",
+        "Driver_Track_History",
+        "Driver_Track_Missing",
+        "Circuit_Overtake_Difficulty_Index",
+        "Circuit_Attrition_Index"
+      ],
+      "l2_lambda": 0.2,
+      "dnf_integration": "25,000 Gumbel-Max Monte Carlo simulations over stratified Bernoulli survival realizations"
+    },
+    "Exact_Interventional_SHAP_Explainer": {
+      "method": "Full 2^10 = 1,024 coalition enumeration over K=80 fixed pre-race historical background rows",
+      "is_exact": true
+    }
+  }
+}

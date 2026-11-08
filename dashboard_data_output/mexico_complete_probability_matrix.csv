@@ -1,0 +1,23 @@
+Driver,FullName,Constructor,grid_pos,quali_pos,pred_ridge_rank,pred_ridge_cont,P1_LR_calibrated,P1_HGB_calibrated,P1_to_P3_Cumulative_LR_calibrated,P1_to_P3_Cumulative_HGB_calibrated,P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12,P13,P14,P15,P16,P17,P18,P19,P20,P21,P22,DNF,Distribution_Status,FinishPosition
+HAM,Lewis Hamilton,Ferrari,1,1,1,2.757677,0.56354,0.491843,0.837106,0.74247,0.56354,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),2
+LEC,Charles Leclerc,Ferrari,3,3,2,4.342443,0.152532,0.138002,0.596232,0.556227,0.152532,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),4
+VER,Max Verstappen,Red Bull,5,4,3,5.2908,0.115801,0.168772,0.434561,0.57317,0.115801,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),1
+RUS,George Russell,Mercedes,2,2,4,5.802203,0.026391,0.090537,0.389619,0.601424,0.026391,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),6
+ANT,Andrea Kimi Antonelli,Mercedes,4,5,5,5.920654,0.085224,0.068631,0.331264,0.30346,0.085224,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),3
+NOR,Lando Norris,McLaren,6,6,6,6.90886,0.033612,0.022627,0.187011,0.10687,0.033612,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),5
+HAD,Isack Hadjar,Red Bull,7,7,7,7.26006,0.013501,0.008344,0.145131,0.056652,0.013501,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),12
+LIN,Arvid Lindblad,RB,8,9,8,10.008377,0.001606,0.001611,0.026568,0.005189,0.001606,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),18
+PIA,Oscar Piastri,McLaren,12,13,9,10.168658,0.00172,0.000411,0.01586,0.026039,0.00172,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),7
+GAS,Pierre Gasly,Alpine,9,10,10,10.970535,0.001809,0.002069,0.01172,0.001715,0.001809,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),10
+LAW,Liam Lawson,RB,22,8,11,11.247934,0.002369,0.003375,0.007566,0.008116,0.002369,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),9
+HUL,Nico Hülkenberg,Sauber_Audi,10,11,12,11.443875,0.001367,0.000335,0.009322,0.008511,0.001367,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),16
+COL,Franco Colapinto,Alpine,11,12,13,12.621734,0.000161,0.000201,0.003365,0.001399,0.000161,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),8
+BOR,Gabriel Bortoleto,Sauber_Audi,13,14,14,13.816664,6.7e-05,0.000168,0.001528,0.004248,6.7e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),11
+BEA,Oliver Bearman,Haas,14,15,15,14.52124,7.2e-05,0.000127,0.000965,0.00086,7.2e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),19
+SAI,Carlos Sainz,Williams,15,16,16,14.983817,4.7e-05,0.000381,0.000581,0.000702,4.7e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),15
+ALO,Fernando Alonso,Aston Martin,17,18,17,15.013146,4.8e-05,0.000855,0.000476,0.00062,4.8e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),22
+HIR,Ryo Hirakawa,Haas,18,19,18,15.323619,8.4e-05,0.000242,0.000547,0.000261,8.4e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),13
+ALB,Alexander Albon,Williams,16,17,19,15.750808,1.8e-05,0.000489,0.000322,0.000523,1.8e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),14
+STR,Lance Stroll,Aston Martin,19,20,20,16.279086,1.3e-05,0.000489,0.000176,0.000725,1.3e-05,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),21
+PER,Sergio Perez,Cadillac,20,21,21,18.244778,9e-06,0.000289,4.9e-05,0.000415,9e-06,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),17
+BOT,Valtteri Bottas,Cadillac,21,22,22,18.876007,9e-06,0.000201,3e-05,0.000402,9e-06,,,,,,,,,,,,,,,,,,,,,,,Unmodeled by project codebase (P1 and P1..P3 only; P2..P22 and DNF are null),20

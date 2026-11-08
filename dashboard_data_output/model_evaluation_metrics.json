@@ -1,0 +1,1870 @@
+{
+  "audit_status": "PASS_SOURCE_RECONCILED",
+  "walk_forward_validation_summary": {
+    "evaluation_protocol": "Strict Expanding-Window Walk-Forward Validation (train on all historical rounds strictly prior to target race)",
+    "evaluated_races_count": 66,
+    "evaluated_seasons_breakdown": {
+      "2024": "Rounds 1 to 24 (24 races, trained expanding from 67 prior rounds)",
+      "2025": "Rounds 1 to 24 (24 races)",
+      "2026": "Rounds 1 to 18 (18 races, up to Singapore GP; Round 19 Mexico held out as out-of-sample test)"
+    },
+    "total_evaluated_driver_starts": 1341,
+    "total_historical_training_rounds_pre_mexico": 132,
+    "total_historical_training_rows_pre_mexico": 2654,
+    "total_historical_training_rounds_pre_brazil": 133,
+    "total_historical_training_rows_pre_brazil": 2676
+  },
+  "headline_metrics_verification": {
+    "delta_mae_vs_grid": {
+      "reported_value": -0.094,
+      "exact_value_ridge_rank_minus_grid": -0.093946,
+      "exact_value_ridge_cont_minus_grid": -0.16854,
+      "grid_baseline_mae": 3.129889,
+      "quali_baseline_mae": 3.210489,
+      "ridge_rank_mae": 3.035943,
+      "ridge_cont_mae": 2.961349,
+      "heuristic_rank_mae": 3.168344,
+      "heuristic_cont_mae": 3.063153,
+      "true_meaning": "Mean Absolute Error reduction (in finishing positions) of RidgeRank (3.0359) compared to the Starting Grid baseline (3.1299) across 66 walk-forward races. Negative means lower error (better accuracy). It is NOT positions gained by a driver.",
+      "verification_status": "PASS"
+    },
+    "spearman_rank_correlation_overall": {
+      "reported_value": 0.711,
+      "exact_value": 0.710539,
+      "quali_baseline_spearman": 0.688116,
+      "grid_baseline_spearman": 0.703737,
+      "ridge_cont_spearman": 0.710539,
+      "ridge_rank_spearman": 0.710539,
+      "heuristic_rank_spearman": 0.688618,
+      "calculation_method": "Arithmetic mean of the 66 individual intra-race Spearman rank correlation coefficients (scipy.stats.spearmanr) across 2024-2026 walk-forward races",
+      "verification_status": "PASS"
+    },
+    "spearman_rank_correlation_mexico_2026": {
+      "reported_value": 0.823,
+      "exact_value": 0.822699,
+      "p_value": 2.61e-06,
+      "mexico_grid_baseline_spearman": 0.718803,
+      "mexico_quali_baseline_spearman": 0.817053,
+      "mexico_ridge_rank_mae": 3.0909,
+      "mexico_ridge_cont_mae": 2.9172,
+      "mexico_grid_baseline_mae": 3.6364,
+      "mexico_quali_baseline_mae": 3.1818,
+      "calculation_method": "Single-race Spearman rank correlation between actual FinishPosition and pred_ridge_rank across all 22 drivers in 2026 Round 19 (Mexico City GP)",
+      "verification_status": "PASS"
+    },
+    "top_3_podium_hit_rate": {
+      "reported_value_pct": 69.2,
+      "exact_value_pct": 69.1919,
+      "numerator_correct_podium_finishers": 137,
+      "denominator_total_podium_slots": 198,
+      "races_evaluated": 66,
+      "hits_per_race_distribution": {
+        "3_of_3_correct": 19,
+        "2_of_3_correct": 34,
+        "1_of_3_correct": 12,
+        "0_of_3_correct": 1
+      },
+      "mexico_2026_out_of_sample_podium_hit_rate": "2/3 (66.7% in Top 3: ['HAM', 'VER']; 3/3 [100.0%] of actual podium captured in Top 5)",
+      "calculation_method": "For each of the 66 walk-forward races, take the top 3 drivers with lowest pred_ridge_cont (ranks 1, 2, 3) and count how many actually finished in P1, P2, or P3 (order-agnostic set intersection divided by 3). Identical for pred_ridge_rank, p_podium_lr, and grid_pos (137/198 = 69.1919%).",
+      "verification_status": "PASS"
+    }
+  },
+  "evaluation_summary_csv_table": [
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Baseline 1: Starting Grid (grid_pos)",
+      "N_Races": 66,
+      "MAE": 3.1299,
+      "Delta_MAE_vs_Grid": 0.0,
+      "95%_CI": "[+0.0000, +0.0000]",
+      "Spearman_Rho": 0.6883,
+      "Top3_Hit_%": 68.69,
+      "Winner_Hit_%": 60.61
+    },
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Baseline 2: Qualifying Rank (quali_pos)",
+      "N_Races": 66,
+      "MAE": 3.0697,
+      "Delta_MAE_vs_Grid": -0.0602,
+      "95%_CI": "[-0.1205, +0.0027]",
+      "Spearman_Rho": 0.7049,
+      "Top3_Hit_%": 66.67,
+      "Winner_Hit_%": 62.12
+    },
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Baseline 3: Heuristic [grid + team_form_3] (Continuous)",
+      "N_Races": 66,
+      "MAE": 3.1445,
+      "Delta_MAE_vs_Grid": 0.0146,
+      "95%_CI": "[-0.0979, +0.1292]",
+      "Spearman_Rho": 0.6923,
+      "Top3_Hit_%": 64.65,
+      "Winner_Hit_%": 50.0
+    },
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Baseline 3: Heuristic [grid + team_form_3] (Rank-Ordered)",
+      "N_Races": 66,
+      "MAE": 3.1586,
+      "Delta_MAE_vs_Grid": 0.0287,
+      "95%_CI": "[-0.0788, +0.1384]",
+      "Spearman_Rho": 0.6923,
+      "Top3_Hit_%": 64.65,
+      "Winner_Hit_%": 50.0
+    },
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Full RidgeCV (Continuous yhat)",
+      "N_Races": 66,
+      "MAE": 3.0863,
+      "Delta_MAE_vs_Grid": -0.0435,
+      "95%_CI": "[-0.1534, +0.0750]",
+      "Spearman_Rho": 0.7105,
+      "Top3_Hit_%": 69.19,
+      "Winner_Hit_%": 57.58
+    },
+    {
+      "Evaluation_Slice": "Overall_2024_2026 (66 Rounds)",
+      "Model": "Full RidgeCV (Intra-Race Rank-Ordered)",
+      "N_Races": 66,
+      "MAE": 3.0359,
+      "Delta_MAE_vs_Grid": -0.0939,
+      "95%_CI": "[-0.2022, +0.0135]",
+      "Spearman_Rho": 0.7105,
+      "Top3_Hit_%": 69.19,
+      "Winner_Hit_%": 57.58
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Baseline 1: Starting Grid (grid_pos)",
+      "N_Races": 18,
+      "MAE": 3.2049,
+      "Delta_MAE_vs_Grid": 0.0,
+      "95%_CI": "[+0.0000, +0.0000]",
+      "Spearman_Rho": 0.6832,
+      "Top3_Hit_%": 62.96,
+      "Winner_Hit_%": 72.22
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Baseline 2: Qualifying Rank (quali_pos)",
+      "N_Races": 18,
+      "MAE": 3.0635,
+      "Delta_MAE_vs_Grid": -0.1414,
+      "95%_CI": "[-0.2727, -0.0303]",
+      "Spearman_Rho": 0.7185,
+      "Top3_Hit_%": 61.11,
+      "Winner_Hit_%": 72.22
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Baseline 3: Heuristic [grid + team_form_3] (Continuous)",
+      "N_Races": 18,
+      "MAE": 3.2797,
+      "Delta_MAE_vs_Grid": 0.0748,
+      "95%_CI": "[-0.1002, +0.2555]",
+      "Spearman_Rho": 0.7002,
+      "Top3_Hit_%": 59.26,
+      "Winner_Hit_%": 61.11
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Baseline 3: Heuristic [grid + team_form_3] (Rank-Ordered)",
+      "N_Races": 18,
+      "MAE": 3.178,
+      "Delta_MAE_vs_Grid": -0.0269,
+      "95%_CI": "[-0.1628, +0.1105]",
+      "Spearman_Rho": 0.7002,
+      "Top3_Hit_%": 59.26,
+      "Winner_Hit_%": 61.11
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Full RidgeCV (Continuous yhat)",
+      "N_Races": 18,
+      "MAE": 3.1717,
+      "Delta_MAE_vs_Grid": -0.0333,
+      "95%_CI": "[-0.2277, +0.1719]",
+      "Spearman_Rho": 0.7129,
+      "Top3_Hit_%": 64.81,
+      "Winner_Hit_%": 72.22
+    },
+    {
+      "Evaluation_Slice": "Season_2026_Standalone (18 Rounds)",
+      "Model": "Full RidgeCV (Intra-Race Rank-Ordered)",
+      "N_Races": 18,
+      "MAE": 3.1035,
+      "Delta_MAE_vs_Grid": -0.1015,
+      "95%_CI": "[-0.3051, +0.0916]",
+      "Spearman_Rho": 0.7129,
+      "Top3_Hit_%": 64.81,
+      "Winner_Hit_%": 72.22
+    }
+  ],
+  "feature_importance_verification": {
+    "model_type": "sklearn.linear_model.RidgeCV(alphas=np.logspace(-1, 3, 25))",
+    "preprocessing": "sklearn.preprocessing.StandardScaler (zero mean, unit variance per feature across training rows)",
+    "coefficient_interpretation": "Standardized regression weight (beta_j): expected change in predicted finishing position (1..22) per +1.0 standard deviation increase in feature X_j. Positive coefficient means a higher feature value (e.g. worse qualifying position number) increases predicted finishing position number (worse finish).",
+    "optimal_alpha_132_rounds": 31.6228,
+    "intercept_132_rounds": 10.5697,
+    "optimal_alpha_133_rounds": 31.6228,
+    "intercept_133_rounds": 10.5774,
+    "note_on_reported_top4": "The reported values (+2.06, +0.90, +0.88, +0.54) come from the 132-round pre-Mexico RidgeCV fit (+2.0666, +0.9069, +0.8875, +0.5466), truncated at 2 decimal places.",
+    "all_12_features_ranked_by_abs_magnitude": [
+      {
+        "feature_code": "quali_pos",
+        "reported_dashboard_value": 2.06,
+        "exact_standardized_coef_132_rounds": 2.066649,
+        "exact_standardized_coef_133_rounds": 2.09548,
+        "scaler_mean_132": 10.5682,
+        "scaler_std_132": 5.8239,
+        "scaler_mean_133": 10.5759,
+        "scaler_std_133": 5.829,
+        "rank_by_abs_magnitude": 1
+      },
+      {
+        "feature_code": "team_form_3",
+        "reported_dashboard_value": 0.9,
+        "exact_standardized_coef_132_rounds": 0.906928,
+        "exact_standardized_coef_133_rounds": 0.899616,
+        "scaler_mean_132": 10.5576,
+        "scaler_std_132": 4.1669,
+        "scaler_mean_133": 10.5654,
+        "scaler_std_133": 4.1781,
+        "rank_by_abs_magnitude": 2
+      },
+      {
+        "feature_code": "grid_pos",
+        "reported_dashboard_value": 0.88,
+        "exact_standardized_coef_132_rounds": 0.887523,
+        "exact_standardized_coef_133_rounds": 0.866559,
+        "scaler_mean_132": 10.5682,
+        "scaler_std_132": 5.8239,
+        "scaler_mean_133": 10.5759,
+        "scaler_std_133": 5.829,
+        "rank_by_abs_magnitude": 3
+      },
+      {
+        "feature_code": "driver_form_3",
+        "reported_dashboard_value": 0.54,
+        "exact_standardized_coef_132_rounds": 0.546641,
+        "exact_standardized_coef_133_rounds": 0.559251,
+        "scaler_mean_132": 10.5161,
+        "scaler_std_132": 4.6181,
+        "scaler_mean_133": 10.5233,
+        "scaler_std_133": 4.6298,
+        "rank_by_abs_magnitude": 4
+      },
+      {
+        "feature_code": "team_dnf_rate_5",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": -0.239909,
+        "exact_standardized_coef_133_rounds": -0.241035,
+        "scaler_mean_132": 0.1409,
+        "scaler_std_132": 0.1256,
+        "scaler_mean_133": 0.1413,
+        "scaler_std_133": 0.126,
+        "rank_by_abs_magnitude": 5
+      },
+      {
+        "feature_code": "no_quali_time",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": -0.183424,
+        "exact_standardized_coef_133_rounds": -0.183075,
+        "scaler_mean_132": 0.0203,
+        "scaler_std_132": 0.1412,
+        "scaler_mean_133": 0.0202,
+        "scaler_std_133": 0.1406,
+        "rank_by_abs_magnitude": 6
+      },
+      {
+        "feature_code": "qualified_on_pole",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": -0.170768,
+        "exact_standardized_coef_133_rounds": -0.169903,
+        "scaler_mean_132": 0.0497,
+        "scaler_std_132": 0.2174,
+        "scaler_mean_133": 0.0497,
+        "scaler_std_133": 0.2173,
+        "rank_by_abs_magnitude": 7
+      },
+      {
+        "feature_code": "teammate_quali_delta",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": -0.108878,
+        "exact_standardized_coef_133_rounds": -0.115164,
+        "scaler_mean_132": 0.0,
+        "scaler_std_132": 0.7256,
+        "scaler_mean_133": 0.0,
+        "scaler_std_133": 0.7232,
+        "rank_by_abs_magnitude": 8
+      },
+      {
+        "feature_code": "is_new_driver_or_team",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": -0.064996,
+        "exact_standardized_coef_133_rounds": -0.073178,
+        "scaler_mean_132": 0.0136,
+        "scaler_std_132": 0.1157,
+        "scaler_mean_133": 0.0138,
+        "scaler_std_133": 0.1168,
+        "rank_by_abs_magnitude": 9
+      },
+      {
+        "feature_code": "quali_gap_pct",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": 0.055697,
+        "exact_standardized_coef_133_rounds": 0.058193,
+        "scaler_mean_132": 1.7903,
+        "scaler_std_132": 1.6115,
+        "scaler_mean_133": 1.7883,
+        "scaler_std_133": 1.6094,
+        "rank_by_abs_magnitude": 10
+      },
+      {
+        "feature_code": "pitlane_start",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": 0.026343,
+        "exact_standardized_coef_133_rounds": 0.027979,
+        "scaler_mean_132": 0.0094,
+        "scaler_std_132": 0.0966,
+        "scaler_mean_133": 0.0093,
+        "scaler_std_133": 0.0962,
+        "rank_by_abs_magnitude": 11
+      },
+      {
+        "feature_code": "is_sprint_weekend",
+        "reported_dashboard_value": null,
+        "exact_standardized_coef_132_rounds": 0.006451,
+        "exact_standardized_coef_133_rounds": 0.00478,
+        "scaler_mean_132": 0.2272,
+        "scaler_std_132": 0.419,
+        "scaler_mean_133": 0.2253,
+        "scaler_std_133": 0.4178,
+        "rank_by_abs_magnitude": 12
+      }
+    ]
+  },
+  "walk_forward_per_race_results_66_races": [
+    {
+      "Year": 2024,
+      "Round": 1,
+      "EventName": "Bahrain Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.3,
+      "mae_ridge_rank": 2.0,
+      "mae_ridge_cont": 2.4795,
+      "spearman_grid": 0.8857,
+      "spearman_quali": 0.8857,
+      "spearman_ridge": 0.8752,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "PER",
+        "SAI",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "PER",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 2,
+      "EventName": "Saudi Arabian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.5,
+      "mae_ridge_rank": 2.4,
+      "mae_ridge_cont": 2.6671,
+      "spearman_grid": 0.8316,
+      "spearman_quali": 0.8316,
+      "spearman_ridge": 0.8301,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "PER",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "PER",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 3,
+      "EventName": "Australian Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 3.8947,
+      "mae_ridge_rank": 4.3158,
+      "mae_ridge_cont": 4.1193,
+      "spearman_grid": 0.4474,
+      "spearman_quali": 0.4368,
+      "spearman_ridge": 0.3895,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "PER",
+        "SAI",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 4,
+      "EventName": "Japanese Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.2,
+      "mae_ridge_rank": 1.8,
+      "mae_ridge_cont": 1.8659,
+      "spearman_grid": 0.8602,
+      "spearman_quali": 0.8602,
+      "spearman_ridge": 0.9008,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "PER",
+        "SAI",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "PER",
+        "SAI",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 5,
+      "EventName": "Chinese Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.9,
+      "mae_ridge_rank": 2.7,
+      "mae_ridge_cont": 2.633,
+      "spearman_grid": 0.7729,
+      "spearman_quali": 0.7729,
+      "spearman_ridge": 0.7985,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "PER",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "PER",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 6,
+      "EventName": "Miami Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.8,
+      "mae_ridge_rank": 2.9,
+      "mae_ridge_cont": 2.7821,
+      "spearman_grid": 0.815,
+      "spearman_quali": 0.8195,
+      "spearman_ridge": 0.815,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "SAI",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 7,
+      "EventName": "Emilia Romagna Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.1,
+      "mae_ridge_rank": 2.0,
+      "mae_ridge_cont": 2.0514,
+      "spearman_grid": 0.8887,
+      "spearman_quali": 0.8827,
+      "spearman_ridge": 0.8857,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 8,
+      "EventName": "Monaco Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 0.9,
+      "mae_ridge_rank": 2.3,
+      "mae_ridge_cont": 2.48,
+      "spearman_grid": 0.9474,
+      "spearman_quali": 0.8692,
+      "spearman_ridge": 0.8301,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "PIA",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "PIA",
+        "SAI"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 9,
+      "EventName": "Canadian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 4.0,
+      "mae_ridge_rank": 4.5,
+      "mae_ridge_cont": 4.0758,
+      "spearman_grid": 0.6632,
+      "spearman_quali": 0.6571,
+      "spearman_ridge": 0.582,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 10,
+      "EventName": "Spanish Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 1.5,
+      "mae_ridge_rank": 1.1,
+      "mae_ridge_cont": 1.9851,
+      "spearman_grid": 0.9474,
+      "spearman_quali": 0.9579,
+      "spearman_ridge": 0.9549,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "HAM",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "NOR",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 11,
+      "EventName": "Austrian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.2,
+      "mae_ridge_rank": 3.4,
+      "mae_ridge_cont": 3.153,
+      "spearman_grid": 0.6406,
+      "spearman_quali": 0.6406,
+      "spearman_ridge": 0.6211,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "PIA",
+        "RUS",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 12,
+      "EventName": "British Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 2.6316,
+      "mae_ridge_rank": 2.8421,
+      "mae_ridge_cont": 3.4201,
+      "spearman_grid": 0.6386,
+      "spearman_quali": 0.6386,
+      "spearman_ridge": 0.6158,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 13,
+      "EventName": "Hungarian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.5,
+      "mae_ridge_rank": 1.8,
+      "mae_ridge_cont": 2.4333,
+      "spearman_grid": 0.818,
+      "spearman_quali": 0.818,
+      "spearman_ridge": 0.9173,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 14,
+      "EventName": "Belgian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.8,
+      "mae_ridge_rank": 2.4,
+      "mae_ridge_cont": 2.4318,
+      "spearman_grid": 0.7368,
+      "spearman_quali": 0.7925,
+      "spearman_ridge": 0.8105,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "LEC",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "LEC",
+        "PER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 15,
+      "EventName": "Dutch Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.5,
+      "mae_ridge_rank": 1.8,
+      "mae_ridge_cont": 2.2983,
+      "spearman_grid": 0.8466,
+      "spearman_quali": 0.8541,
+      "spearman_ridge": 0.9143,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 16,
+      "EventName": "Italian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.1,
+      "mae_ridge_rank": 2.2,
+      "mae_ridge_cont": 2.0307,
+      "spearman_grid": 0.8782,
+      "spearman_quali": 0.8782,
+      "spearman_ridge": 0.8842,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 17,
+      "EventName": "Azerbaijan Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 4.4,
+      "mae_ridge_rank": 4.2,
+      "mae_ridge_cont": 3.8397,
+      "spearman_grid": 0.3865,
+      "spearman_quali": 0.4331,
+      "spearman_ridge": 0.5233,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "PIA",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "PIA",
+        "SAI"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 18,
+      "EventName": "Singapore Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.7,
+      "mae_ridge_rank": 1.8,
+      "mae_ridge_cont": 2.1615,
+      "spearman_grid": 0.8256,
+      "spearman_quali": 0.8256,
+      "spearman_ridge": 0.8707,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 19,
+      "EventName": "United States Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.8,
+      "mae_ridge_rank": 3.0,
+      "mae_ridge_cont": 2.8843,
+      "spearman_grid": 0.6195,
+      "spearman_quali": 0.8331,
+      "spearman_ridge": 0.7774,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "LEC",
+        "SAI",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 20,
+      "EventName": "Mexico City Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.4,
+      "mae_ridge_rank": 3.1,
+      "mae_ridge_cont": 3.1656,
+      "spearman_grid": 0.6827,
+      "spearman_quali": 0.6857,
+      "spearman_ridge": 0.7444,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "SAI",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 21,
+      "EventName": "S\u00e3o Paulo Grand Prix",
+      "n_drivers": 18,
+      "mae_grid": 3.6667,
+      "mae_ridge_rank": 3.6667,
+      "mae_ridge_cont": 3.1857,
+      "spearman_grid": 0.581,
+      "spearman_quali": 0.6367,
+      "spearman_ridge": 0.5975,
+      "top3_podium_hits_ridge": 0,
+      "actual_top3": [
+        "GAS",
+        "OCO",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 22,
+      "EventName": "Las Vegas Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.0,
+      "mae_ridge_rank": 2.9,
+      "mae_ridge_cont": 2.7621,
+      "spearman_grid": 0.6241,
+      "spearman_quali": 0.6271,
+      "spearman_ridge": 0.7203,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "RUS",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "RUS",
+        "SAI"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 23,
+      "EventName": "Qatar Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.7,
+      "mae_ridge_rank": 2.9,
+      "mae_ridge_cont": 3.1315,
+      "spearman_grid": 0.8105,
+      "spearman_quali": 0.815,
+      "spearman_ridge": 0.7865,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "LEC",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2024,
+      "Round": 24,
+      "EventName": "Abu Dhabi Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 4.2,
+      "mae_ridge_rank": 3.7,
+      "mae_ridge_cont": 3.4955,
+      "spearman_grid": 0.4391,
+      "spearman_quali": 0.4887,
+      "spearman_ridge": 0.5789,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "SAI"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "SAI"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 1,
+      "EventName": "Australian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 4.7,
+      "mae_ridge_rank": 4.4,
+      "mae_ridge_cont": 4.1334,
+      "spearman_grid": 0.4887,
+      "spearman_quali": 0.4887,
+      "spearman_ridge": 0.5293,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 2,
+      "EventName": "Chinese Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 4.9,
+      "mae_ridge_rank": 4.7,
+      "mae_ridge_cont": 4.2808,
+      "spearman_grid": 0.4421,
+      "spearman_quali": 0.4421,
+      "spearman_ridge": 0.4586,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 3,
+      "EventName": "Japanese Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 0.9,
+      "mae_ridge_rank": 1.3,
+      "mae_ridge_cont": 2.073,
+      "spearman_grid": 0.9639,
+      "spearman_quali": 0.9609,
+      "spearman_ridge": 0.9564,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 4,
+      "EventName": "Bahrain Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.2,
+      "mae_ridge_rank": 2.5,
+      "mae_ridge_cont": 2.9565,
+      "spearman_grid": 0.7158,
+      "spearman_quali": 0.7128,
+      "spearman_ridge": 0.7444,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 5,
+      "EventName": "Saudi Arabian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.8,
+      "mae_ridge_rank": 2.4,
+      "mae_ridge_cont": 2.3919,
+      "spearman_grid": 0.7323,
+      "spearman_quali": 0.7323,
+      "spearman_ridge": 0.791,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "PIA",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 6,
+      "EventName": "Miami Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.5,
+      "mae_ridge_rank": 2.3,
+      "mae_ridge_cont": 2.6553,
+      "spearman_grid": 0.8526,
+      "spearman_quali": 0.8662,
+      "spearman_ridge": 0.8797,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 7,
+      "EventName": "Emilia Romagna Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.6,
+      "mae_ridge_rank": 2.6,
+      "mae_ridge_cont": 2.8956,
+      "spearman_grid": 0.6977,
+      "spearman_quali": 0.6992,
+      "spearman_ridge": 0.815,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 8,
+      "EventName": "Monaco Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.8,
+      "mae_ridge_rank": 2.8,
+      "mae_ridge_cont": 2.8935,
+      "spearman_grid": 0.7383,
+      "spearman_quali": 0.7744,
+      "spearman_ridge": 0.7699,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 9,
+      "EventName": "Spanish Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 3.2632,
+      "mae_ridge_rank": 3.5789,
+      "mae_ridge_cont": 3.255,
+      "spearman_grid": 0.6088,
+      "spearman_quali": 0.6088,
+      "spearman_ridge": 0.5632,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 10,
+      "EventName": "Canadian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.2,
+      "mae_ridge_rank": 3.8,
+      "mae_ridge_cont": 3.5373,
+      "spearman_grid": 0.6872,
+      "spearman_quali": 0.6737,
+      "spearman_ridge": 0.612,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "PIA",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 11,
+      "EventName": "Austrian Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 3.2632,
+      "mae_ridge_rank": 3.2632,
+      "mae_ridge_cont": 3.1588,
+      "spearman_grid": 0.607,
+      "spearman_quali": 0.607,
+      "spearman_ridge": 0.5895,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 12,
+      "EventName": "British Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 4.6316,
+      "mae_ridge_rank": 4.5263,
+      "mae_ridge_cont": 4.074,
+      "spearman_grid": 0.4158,
+      "spearman_quali": 0.4035,
+      "spearman_ridge": 0.3825,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HUL",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 13,
+      "EventName": "Belgian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.9,
+      "mae_ridge_rank": 2.8,
+      "mae_ridge_cont": 3.0005,
+      "spearman_grid": 0.7173,
+      "spearman_quali": 0.7338,
+      "spearman_ridge": 0.7594,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 14,
+      "EventName": "Hungarian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.3,
+      "mae_ridge_rank": 2.3,
+      "mae_ridge_cont": 2.5315,
+      "spearman_grid": 0.8481,
+      "spearman_quali": 0.8406,
+      "spearman_ridge": 0.8496,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 15,
+      "EventName": "Dutch Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 6.0,
+      "mae_ridge_rank": 6.2,
+      "mae_ridge_cont": 5.4579,
+      "spearman_grid": 0.0842,
+      "spearman_quali": 0.0857,
+      "spearman_ridge": 0.0481,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAD",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 16,
+      "EventName": "Italian Grand Prix",
+      "n_drivers": 19,
+      "mae_grid": 2.6316,
+      "mae_ridge_rank": 2.3158,
+      "mae_ridge_cont": 2.4969,
+      "spearman_grid": 0.7421,
+      "spearman_quali": 0.814,
+      "spearman_ridge": 0.8211,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 17,
+      "EventName": "Azerbaijan Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.6,
+      "mae_ridge_rank": 2.6,
+      "mae_ridge_cont": 2.9157,
+      "spearman_grid": 0.7925,
+      "spearman_quali": 0.7925,
+      "spearman_ridge": 0.7835,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "RUS",
+        "SAI",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LAW",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 18,
+      "EventName": "Singapore Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.3,
+      "mae_ridge_rank": 2.3,
+      "mae_ridge_cont": 2.6337,
+      "spearman_grid": 0.8241,
+      "spearman_quali": 0.8045,
+      "spearman_ridge": 0.8602,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "PIA",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 19,
+      "EventName": "United States Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.9,
+      "mae_ridge_rank": 2.8,
+      "mae_ridge_cont": 2.8623,
+      "spearman_grid": 0.7534,
+      "spearman_quali": 0.7564,
+      "spearman_ridge": 0.7489,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 20,
+      "EventName": "Mexico City Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.4,
+      "mae_ridge_rank": 3.7,
+      "mae_ridge_cont": 3.4248,
+      "spearman_grid": 0.7669,
+      "spearman_quali": 0.7023,
+      "spearman_ridge": 0.7263,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "LEC",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "LEC",
+        "NOR"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 21,
+      "EventName": "S\u00e3o Paulo Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.3,
+      "mae_ridge_rank": 3.9,
+      "mae_ridge_cont": 3.6999,
+      "spearman_grid": 0.5158,
+      "spearman_quali": 0.6045,
+      "spearman_ridge": 0.5579,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "LEC",
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 22,
+      "EventName": "Las Vegas Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 5.6,
+      "mae_ridge_rank": 4.8,
+      "mae_ridge_cont": 4.7775,
+      "spearman_grid": 0.1414,
+      "spearman_quali": 0.1353,
+      "spearman_ridge": 0.2511,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 23,
+      "EventName": "Qatar Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 3.9,
+      "mae_ridge_rank": 4.0,
+      "mae_ridge_cont": 3.4557,
+      "spearman_grid": 0.6346,
+      "spearman_quali": 0.6346,
+      "spearman_ridge": 0.6226,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "PIA",
+        "SAI",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2025,
+      "Round": 24,
+      "EventName": "Abu Dhabi Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.6,
+      "mae_ridge_rank": 2.9,
+      "mae_ridge_cont": 3.5154,
+      "spearman_grid": 0.7744,
+      "spearman_quali": 0.7744,
+      "spearman_ridge": 0.7188,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "NOR",
+        "PIA",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 1,
+      "EventName": "Australian Grand Prix",
+      "n_drivers": 20,
+      "mae_grid": 2.8,
+      "mae_ridge_rank": 2.6,
+      "mae_ridge_cont": 3.1926,
+      "spearman_grid": 0.6045,
+      "spearman_quali": 0.6045,
+      "spearman_ridge": 0.6917,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "ANT",
+        "LEC",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "LEC",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 2,
+      "EventName": "Chinese Grand Prix",
+      "n_drivers": 18,
+      "mae_grid": 2.2222,
+      "mae_ridge_rank": 2.7778,
+      "mae_ridge_cont": 3.0874,
+      "spearman_grid": 0.7957,
+      "spearman_quali": 0.7957,
+      "spearman_ridge": 0.7255,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "ANT",
+        "HAM",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "HAM",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 3,
+      "EventName": "Japanese Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.0,
+      "mae_ridge_rank": 2.2727,
+      "mae_ridge_cont": 2.4333,
+      "spearman_grid": 0.9221,
+      "spearman_quali": 0.9221,
+      "spearman_ridge": 0.895,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "LEC",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 4,
+      "EventName": "Miami Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 3.4545,
+      "mae_ridge_rank": 3.8182,
+      "mae_ridge_cont": 3.1672,
+      "spearman_grid": 0.7109,
+      "spearman_quali": 0.7109,
+      "spearman_ridge": 0.6725,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "NOR",
+        "PIA"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "LEC",
+        "NOR"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 5,
+      "EventName": "Canadian Grand Prix",
+      "n_drivers": 21,
+      "mae_grid": 4.6667,
+      "mae_ridge_rank": 4.6667,
+      "mae_ridge_cont": 4.3795,
+      "spearman_grid": 0.4662,
+      "spearman_quali": 0.4675,
+      "spearman_ridge": 0.4675,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "HAM",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "NOR",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 6,
+      "EventName": "Monaco Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 5.0909,
+      "mae_ridge_rank": 5.5455,
+      "mae_ridge_cont": 4.9626,
+      "spearman_grid": 0.3721,
+      "spearman_quali": 0.3721,
+      "spearman_ridge": 0.3382,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "HAD",
+        "HAM"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "HAM",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 7,
+      "EventName": "Barcelona Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 3.0909,
+      "mae_ridge_rank": 3.0,
+      "mae_ridge_cont": 3.5579,
+      "spearman_grid": 0.7414,
+      "spearman_quali": 0.7414,
+      "spearman_ridge": 0.7617,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "NOR",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "HAM",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 8,
+      "EventName": "Austrian Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 1.8182,
+      "mae_ridge_rank": 1.6364,
+      "mae_ridge_cont": 2.2921,
+      "spearman_grid": 0.9368,
+      "spearman_quali": 0.9368,
+      "spearman_ridge": 0.9435,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "LEC",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 9,
+      "EventName": "British Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 4.3636,
+      "mae_ridge_rank": 4.2727,
+      "mae_ridge_cont": 3.9701,
+      "spearman_grid": 0.5788,
+      "spearman_quali": 0.6014,
+      "spearman_ridge": 0.6172,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "HAM",
+        "LEC",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "HAM",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 10,
+      "EventName": "Belgian Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.9091,
+      "mae_ridge_rank": 2.4545,
+      "mae_ridge_cont": 2.4732,
+      "spearman_grid": 0.6194,
+      "spearman_quali": 0.7696,
+      "spearman_ridge": 0.7256,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "LEC",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "RUS",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 11,
+      "EventName": "Hungarian Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.4545,
+      "mae_ridge_rank": 2.5455,
+      "mae_ridge_cont": 2.6053,
+      "spearman_grid": 0.7708,
+      "spearman_quali": 0.8058,
+      "spearman_ridge": 0.7832,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "LEC",
+        "NOR"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 12,
+      "EventName": "Dutch Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.8182,
+      "mae_ridge_rank": 2.7273,
+      "mae_ridge_cont": 2.9112,
+      "spearman_grid": 0.7516,
+      "spearman_quali": 0.7516,
+      "spearman_ridge": 0.7516,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "NOR",
+        "RUS"
+      ],
+      "pred_top3_ridge": [
+        "HAM",
+        "NOR",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 13,
+      "EventName": "Italian Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 3.8182,
+      "mae_ridge_rank": 2.6364,
+      "mae_ridge_cont": 2.8724,
+      "spearman_grid": 0.5008,
+      "spearman_quali": 0.7109,
+      "spearman_ridge": 0.6736,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "ANT",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "GAS",
+        "LEC",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 14,
+      "EventName": "Spanish Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.1818,
+      "mae_ridge_rank": 2.4545,
+      "mae_ridge_cont": 2.55,
+      "spearman_grid": 0.7764,
+      "spearman_quali": 0.7741,
+      "spearman_ridge": 0.7572,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "NOR",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "NOR",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 15,
+      "EventName": "Azerbaijan Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 4.9091,
+      "mae_ridge_rank": 4.8182,
+      "mae_ridge_cont": 4.615,
+      "spearman_grid": 0.485,
+      "spearman_quali": 0.485,
+      "spearman_ridge": 0.5076,
+      "top3_podium_hits_ridge": 1,
+      "actual_top3": [
+        "HAD",
+        "RUS",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "NOR",
+        "PIA",
+        "RUS"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 16,
+      "EventName": "Bahrain Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 3.9091,
+      "mae_ridge_rank": 3.7273,
+      "mae_ridge_cont": 3.5164,
+      "spearman_grid": 0.6544,
+      "spearman_quali": 0.747,
+      "spearman_ridge": 0.6985,
+      "top3_podium_hits_ridge": 2,
+      "actual_top3": [
+        "ANT",
+        "HAM",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "HAD",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 17,
+      "EventName": "Singapore Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 3.0,
+      "mae_ridge_rank": 1.9091,
+      "mae_ridge_cont": 2.3884,
+      "spearman_grid": 0.7527,
+      "spearman_quali": 0.8283,
+      "spearman_ridge": 0.913,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "ANT",
+        "LEC",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "LEC",
+        "VER"
+      ]
+    },
+    {
+      "Year": 2026,
+      "Round": 18,
+      "EventName": "United States Grand Prix",
+      "n_drivers": 22,
+      "mae_grid": 2.1818,
+      "mae_ridge_rank": 2.0,
+      "mae_ridge_cont": 2.1151,
+      "spearman_grid": 0.8588,
+      "spearman_quali": 0.9085,
+      "spearman_ridge": 0.9097,
+      "top3_podium_hits_ridge": 3,
+      "actual_top3": [
+        "ANT",
+        "LEC",
+        "VER"
+      ],
+      "pred_top3_ridge": [
+        "ANT",
+        "LEC",
+        "VER"
+      ]
+    }
+  ]
+}

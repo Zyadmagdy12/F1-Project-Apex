@@ -1,0 +1,131 @@
+{
+  "status": "SUCCESS",
+  "execution_time_seconds": 283.8,
+  "exported_files": [
+    "data_quality_report.json",
+    "feature_dictionary.json",
+    "mexico_backtest.csv",
+    "mexico_backtest.json",
+    "model_manifest.json",
+    "sao_paulo_predictions.csv",
+    "sao_paulo_predictions.json",
+    "verstappen_shap_case.json",
+    "walk_forward_metrics.json"
+  ],
+  "sao_paulo_top3_ridge": [
+    {
+      "Driver_ID": "ANT",
+      "Exp_Finish": 3.77,
+      "P_Win_HGB": 0.139333,
+      "P_Podium_HGB": 0.694478,
+      "P_Win_PL": 0.13924,
+      "P_Podium_PL": 0.3752
+    },
+    {
+      "Driver_ID": "NOR",
+      "Exp_Finish": 4.0439,
+      "P_Win_HGB": 0.570676,
+      "P_Podium_HGB": 0.723475,
+      "P_Win_PL": 0.139,
+      "P_Podium_PL": 0.37756
+    },
+    {
+      "Driver_ID": "RUS",
+      "Exp_Finish": 5.0508,
+      "P_Win_HGB": 0.054351,
+      "P_Podium_HGB": 0.270904,
+      "P_Win_PL": 0.11204,
+      "P_Podium_PL": 0.31648
+    }
+  ],
+  "mexico_backtest_summary": {
+    "spearman_ridge": 0.843027,
+    "spearman_plackett_luce": 0.832863,
+    "spearman_starting_grid": 0.718803,
+    "continuous_mae_ridge": 2.8386,
+    "rank_mae_ridge": 2.9091,
+    "exp_pos_mae_plackett_luce": 3.301,
+    "conformal_90_empirical_coverage_rank": 0.9545,
+    "conformal_90_empirical_coverage_cont": 0.9091,
+    "actual_podium": [
+      "VER",
+      "HAM",
+      "ANT"
+    ],
+    "predicted_top3_ridge": [
+      "HAM",
+      "LEC",
+      "VER"
+    ],
+    "predicted_top3_pl": [
+      "HAM",
+      "LEC",
+      "VER"
+    ]
+  },
+  "walk_forward_headline": {
+    "spearman_rank_correlation": {
+      "Starting_Grid_Baseline": {
+        "mean": 0.6883,
+        "median": 0.7346
+      },
+      "RidgeCV_Continuous": {
+        "mean": 0.7102,
+        "median": 0.7433
+      },
+      "Plackett_Luce_Pure": {
+        "mean": 0.7065,
+        "median": 0.7444
+      },
+      "Integrated_DNF_Plackett_Luce": {
+        "mean": 0.7117,
+        "median": 0.7489
+      }
+    },
+    "mae_metrics": {
+      "Starting_Grid_Baseline_MAE": 3.1622,
+      "RidgeCV_Continuous_MAE": 3.0369,
+      "RidgeCV_Rank_MAE": 3.0481,
+      "Plackett_Luce_Pure_ExpPos_MAE": 3.6179,
+      "Integrated_DNF_Plackett_Luce_ExpPos_MAE": 3.4338,
+      "Integrated_DNF_Plackett_Luce_Rank_MAE": 3.0277
+    },
+    "top3_podium_hit_rate": {
+      "Starting_Grid_Baseline": 0.6869,
+      "RidgeCV": 0.6919,
+      "Integrated_DNF_Plackett_Luce": 0.7172
+    },
+    "brier_scores_all_1341_starts": {
+      "win_probability": {
+        "Calibrated_Grid_Only_Baseline": 0.03171,
+        "LogisticRegression": 0.02963,
+        "Monotonic_HGB": 0.027827,
+        "Unconstrained_HGB_Diagnostic": 0.028303,
+        "Integrated_DNF_Plackett_Luce": 0.040573
+      },
+      "podium_probability": {
+        "Calibrated_Grid_Only_Baseline": 0.065707,
+        "LogisticRegression": 0.064787,
+        "Monotonic_HGB": 0.064037,
+        "Unconstrained_HGB_Diagnostic": 0.064449,
+        "Integrated_DNF_Plackett_Luce": 0.087489
+      },
+      "dnf_probability": {
+        "Calibrated_Grid_Only_Baseline": 0.110194,
+        "Raw_Uncalibrated_DNF_Model": 0.110552,
+        "Platt_Sigmoid_Calibrated_DNF": 0.110873,
+        "Isotonic_Calibrated_DNF": 0.11079
+      }
+    },
+    "log_loss_all_1341_starts": {
+      "win_monotone_hgb": 0.09471,
+      "win_logistic_regression": 0.100155,
+      "win_plackett_luce": 0.146841,
+      "podium_monotone_hgb": 0.202855,
+      "podium_logistic_regression": 0.211866,
+      "podium_plackett_luce": 0.286562,
+      "dnf_platt_calibrated": 0.378022,
+      "dnf_isotonic_calibrated": 0.382028
+    }
+  }
+}

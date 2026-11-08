@@ -1,0 +1,154 @@
+{
+  "features": [
+    {
+      "feature_name": "Qualifying_Rank",
+      "legacy_alias": "quali_pos",
+      "formula": "Official qualifying classification rank normalized to integer [1..N_entrants]",
+      "source_columns": [
+        "QualiPosition",
+        "best_quali_sec"
+      ],
+      "calculation_window": "Current event Saturday Qualifying session",
+      "historical_cutoff": "Strictly after Saturday Qualifying and before Sunday Race start",
+      "missing_value_strategy": "Drivers failing to set a Q1 time are ranked at the back of Qualifying in starting grid order with no_quali_time=1",
+      "expected_direction": "+1 (Higher numerical rank = worse qualifying position = worse expected finish / lower win & podium probability; monotonic constraint = -1 for Win/Podium)",
+      "availability_timing": "After Qualifying"
+    },
+    {
+      "feature_name": "Starting_Grid_Position",
+      "legacy_alias": "grid_pos",
+      "formula": "Official FIA final starting grid slot normalized to integer [1..N_entrants]",
+      "source_columns": [
+        "GridPosition",
+        "quali_pos"
+      ],
+      "calculation_window": "Current event Sunday pre-race final starting grid",
+      "historical_cutoff": "Strictly before Sunday Race lights out (includes all post-Qualifying power unit / gearbox / sporting grid penalties)",
+      "missing_value_strategy": "Pitlane starts placed at back of grid with pitlane_start=1",
+      "expected_direction": "+1 (Higher numerical slot = worse starting position = worse expected finish / lower win & podium probability; monotonic constraint = -1 for Win/Podium)",
+      "availability_timing": "After Final Grid Published"
+    },
+    {
+      "feature_name": "Delta_Q_to_G",
+      "legacy_alias": null,
+      "formula": "Starting_Grid_Position - Qualifying_Rank",
+      "source_columns": [
+        "grid_pos",
+        "quali_pos"
+      ],
+      "calculation_window": "Current event pre-race grid vs. qualifying classification",
+      "historical_cutoff": "Strictly before Sunday Race start",
+      "missing_value_strategy": "Deterministic difference of complete integer ranks (0 missing values)",
+      "expected_direction": "Positive values indicate net grid drop (penalty) where car pace is faster than starting slot; negative values indicate net grid promotion due to others penalties",
+      "availability_timing": "After Final Grid Published"
+    },
+    {
+      "feature_name": "Teammate_Qualifying_Delta",
+      "legacy_alias": "teammate_quali_delta",
+      "formula": "((Driver_best_quali_sec - Teammate_best_quali_sec) / Session_Median_quali_sec) * 100.0; fallback to ((quali_pos - teammate_quali_pos) / Field_Size) * 5.0 when lap time unavailable",
+      "source_columns": [
+        "best_quali_sec",
+        "quali_pos",
+        "TeamName"
+      ],
+      "calculation_window": "Current event Qualifying session intra-constructor comparison",
+      "historical_cutoff": "Strictly after Qualifying and before Sunday Race start",
+      "missing_value_strategy": "If teammate did not start (solo constructor entry), Teammate_Qualifying_Delta is left as NaN and Teammate_Missing_Flag=1 (imputed via training-fold median inside model pipeline, never silently assumed 0 in raw table)",
+      "expected_direction": "+1 (Positive = slower than teammate in qualifying; Negative = faster than teammate)",
+      "availability_timing": "After Qualifying"
+    },
+    {
+      "feature_name": "Driver_Form",
+      "legacy_alias": "driver_form_3",
+      "formula": "Exponentially recency-weighted (decay=0.60 over up to 6 prior starts) field-size normalized finishing position (scaled to 20-car reference field), shrunk toward 10.5 for <3 starts",
+      "source_columns": [
+        "FinishPosition",
+        "Year",
+        "Round",
+        "Driver"
+      ],
+      "calculation_window": "Up to last 6 strictly prior races for the driver",
+      "historical_cutoff": "Strictly prior completed races (Year, Round) < target race",
+      "missing_value_strategy": "Cold-start drivers with 0 prior starts receive neutral midpoint 10.5 and is_new_driver_or_team=1",
+      "expected_direction": "+1 (Lower value = better recent finishing form; e.g. 1.67 indicates podium/win form)",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    },
+    {
+      "feature_name": "Team_Form",
+      "legacy_alias": "team_form_3",
+      "formula": "Exponentially recency-weighted (decay=0.60 over up to 6 prior races) constructor mean finishing position (scaled to 20-car reference field), shrunk toward 11.5 for <3 races",
+      "source_columns": [
+        "FinishPosition",
+        "Year",
+        "Round",
+        "TeamName"
+      ],
+      "calculation_window": "Up to last 6 strictly prior races for the constructor",
+      "historical_cutoff": "Strictly prior completed races (Year, Round) < target race",
+      "missing_value_strategy": "New constructors with 0 prior races receive 11.5 and is_new_driver_or_team=1",
+      "expected_direction": "+1 (Lower value = stronger constructor race pace)",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    },
+    {
+      "feature_name": "Driver_Track_History",
+      "legacy_alias": null,
+      "formula": "Empirical-Bayes smoothed (prior m=1.0 at 0.50) exponentially recency-weighted (decay=0.65) field-normalized finishing position (FinishPosition - 1)/(Field_Size - 1) at the specific circuit Location",
+      "source_columns": [
+        "FinishPosition",
+        "Location",
+        "Driver"
+      ],
+      "calculation_window": "All strictly prior appearances by the driver at that circuit Location",
+      "historical_cutoff": "Strictly prior completed races at the circuit before target race",
+      "missing_value_strategy": "Drivers with 0 prior circuit appearances receive neutral prior 0.50 with Driver_Track_Starts=0 and Driver_Track_Missing=1",
+      "expected_direction": "+1 (0.0 = historical P1 dominance, 0.5 = midfield/no-history prior, 1.0 = backmarker history)",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    },
+    {
+      "feature_name": "Circuit_Overtake_Difficulty_Index",
+      "legacy_alias": null,
+      "formula": "Empirical-Bayes smoothed (prior m=2.0 races at global mean) of D_r = 1 - min(1, 2.5 * mean(|Finish - Grid| / (Field_Size - 1))) across classified non-DNF finishers at the circuit",
+      "source_columns": [
+        "FinishPosition",
+        "grid_pos",
+        "is_dnf",
+        "Location"
+      ],
+      "calculation_window": "All strictly prior races completed at the circuit Location",
+      "historical_cutoff": "Strictly prior completed races before target race (excludes target race outcome and excludes DNF rows)",
+      "missing_value_strategy": "First-time circuits receive historical global mean overtake difficulty (~0.58)",
+      "expected_direction": "Higher values in [0, 1] indicate less positional movement / greater overtaking difficulty",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    },
+    {
+      "feature_name": "Circuit_Attrition_Index",
+      "legacy_alias": null,
+      "formula": "Empirical-Bayes smoothed (prior m=2.0 races at global DNF rate) historical in-race retirement frequency at the circuit Location",
+      "source_columns": [
+        "is_dnf",
+        "Location"
+      ],
+      "calculation_window": "All strictly prior races completed at the circuit Location",
+      "historical_cutoff": "Strictly prior completed races before target race",
+      "missing_value_strategy": "First-time circuits receive historical global DNF rate (~0.14)",
+      "expected_direction": "+1 (Higher values indicate higher historical circuit retirement risk)",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    },
+    {
+      "feature_name": "Constructor_DNF_Rate_Smoothed",
+      "legacy_alias": "team_dnf_rate_5",
+      "formula": "Empirical-Bayes smoothed (prior m=4 starts at global DNF rate) constructor retirement rate over last 20 car-starts (10 races), paired with Constructor_DNF_EWMA and Constructor_Attributed_Mech_Rate",
+      "source_columns": [
+        "Status",
+        "is_dnf",
+        "is_attributed_mechanical",
+        "TeamName"
+      ],
+      "calculation_window": "Up to last 20 strictly prior car-starts for the constructor",
+      "historical_cutoff": "Strictly prior completed races before target race",
+      "missing_value_strategy": "New constructors receive historical global DNF prior",
+      "expected_direction": "+1 (Higher values indicate higher constructor retirement hazard)",
+      "availability_timing": "Before Qualifying (Pre-Weekend)"
+    }
+  ]
+}

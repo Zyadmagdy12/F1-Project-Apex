@@ -1,0 +1,672 @@
+{
+  "audit_status": "PASS_ON_EXTRACTED_NUMBERS_CRITICAL_MODEL_WARNING_ON_40_2_PCT_HGB",
+  "brazil_2026_verstappen_profile": {
+    "pred_ridge_rank": 12.0,
+    "Driver": "VER",
+    "FullName": "Max Verstappen",
+    "Constructor": "Red Bull",
+    "RawConstructor": "Red Bull",
+    "quali_pos": 16.0,
+    "best_quali_sec": 91.238,
+    "quali_gap_pct": 5.179549253559277,
+    "teammate_quali_delta": 2.3171364343766188,
+    "grid_pos": 21.0,
+    "grid_penalty_places": 5.0,
+    "qualified_on_pole": 0,
+    "pitlane_start": 0,
+    "no_quali_time": 0,
+    "is_sprint_weekend": 0,
+    "driver_form_3": 1.6666666666666667,
+    "team_form_3": 5.5,
+    "team_dnf_rate_5": 0.0,
+    "is_new_driver_or_team": 0,
+    "pred_ridge_cont": 12.008784451129737,
+    "p_win_lr_raw": 0.0001912215678252,
+    "p_win_lr_calibrated": 0.0001956823811576,
+    "p_win_hgb_raw": 0.0013602568649987,
+    "p_win_hgb_calibrated": 0.0052801283482544,
+    "p_pod_lr_raw": 0.0046271518161095,
+    "p_pod_lr_calibrated": 0.0060555491375632,
+    "p_pod_hgb_raw": 0.3606286826557037,
+    "p_pod_hgb_calibrated": 0.4023578906223652,
+    "p_points_model": NaN,
+    "p_dnf_model": NaN,
+    "p_points_synthetic_logistic_adhoc": 0.2302274123194541,
+    "p_dnf_synthetic_adhoc": 0.05,
+    "PredictedAtUTC": "2026-11-07T21:56:12Z"
+  },
+  "rolling_3_race_form_verification": {
+    "driver_form_3_exact": 1.666667,
+    "driver_form_3_reported": 1.67,
+    "formula": "Simple unweighted mean of FinishPosition over the 3 immediately preceding races (Rounds 17, 18, 19 of 2026)",
+    "races_included": [
+      {
+        "Year": 2026,
+        "Round": 17,
+        "EventName": "Singapore Grand Prix",
+        "QualiPosition": 2,
+        "GridPosition": 2,
+        "FinishPosition": 1,
+        "Status": "Finished"
+      },
+      {
+        "Year": 2026,
+        "Round": 18,
+        "EventName": "United States Grand Prix (Austin)",
+        "QualiPosition": 8,
+        "GridPosition": 12,
+        "FinishPosition": 3,
+        "Status": "Finished"
+      },
+      {
+        "Year": 2026,
+        "Round": 19,
+        "EventName": "Mexico City Grand Prix",
+        "QualiPosition": 3,
+        "GridPosition": 3,
+        "FinishPosition": 1,
+        "Status": "Finished"
+      }
+    ],
+    "verification_status": "PASS"
+  },
+  "expected_finish_position_verification": {
+    "pred_ridge_cont_exact": 12.008784,
+    "pred_ridge_cont_reported": 12.01,
+    "pred_ridge_rank_int": 12,
+    "expected_positions_gained_from_p21": 8.99,
+    "linear_combination_breakdown": {
+      "intercept": 10.577354,
+      "grid_pos_contribution": 1.549702,
+      "quali_pos_contribution": 1.949952,
+      "qualified_on_pole_contribution": 0.038856,
+      "pitlane_start_contribution": -0.002717,
+      "no_quali_time_contribution": 0.026273,
+      "is_sprint_weekend_contribution": -0.002578,
+      "quali_gap_pct_contribution": 0.122622,
+      "teammate_quali_delta_contribution": -0.369001,
+      "driver_form_3_contribution": -1.069826,
+      "team_form_3_contribution": -1.090679,
+      "team_dnf_rate_5_contribution": 0.270161,
+      "is_new_driver_or_team_contribution": 0.008665
+    },
+    "verification_status": "PASS"
+  },
+  "podium_probability_investigation": {
+    "hgb_podium_probability_calibrated_pct": 40.2358,
+    "hgb_podium_probability_raw_pct": 36.0629,
+    "lr_podium_probability_calibrated_pct": 0.6056,
+    "lr_podium_probability_raw_pct": 0.4628,
+    "origin_of_40_2_pct": "HistGradientBoostingClassifier (max_depth=3, min_samples_leaf=20, l2_regularization=1.0) trained on 2,676 historical rows (2021-2026 R19) and calibrated via log-odds shift so race podium probabilities sum to 3.0. It does NOT come from a Monte Carlo simulation.",
+    "is_monte_carlo_used_anywhere_in_repo": false,
+    "why_hgb_disagrees_with_lr_and_ridge": {
+      "summary": "HistGradientBoostingClassifier exhibits non-monotonic tree-split overfitting on sparse tail combinations (elite driver_form_3 <= 1.67 paired with extreme back-grid start >= P19 and wet quali_gap_pct > 5%). Because monotonic constraints (monotonic_cst) were not enforced in HistGradientBoostingClassifier, its depth-3 decision trees learned an inverted split where having a worse grid_pos and worse quali_gap_pct actually INCREASES predicted podium probability for a driver with elite form.",
+      "proof_via_feature_perturbation": [
+        {
+          "feature_set_to_mean": "grid_pos",
+          "ver_actual_brazil_value": 21.0,
+          "ver_actual_z_score": 1.7883,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.25125,
+          "lr_raw_podium_prob_when_set_to_mean": 0.018906
+        },
+        {
+          "feature_set_to_mean": "quali_pos",
+          "ver_actual_brazil_value": 16.0,
+          "ver_actual_z_score": 0.9306,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.399281,
+          "lr_raw_podium_prob_when_set_to_mean": 0.020393
+        },
+        {
+          "feature_set_to_mean": "qualified_on_pole",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -0.2287,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.360629,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004762
+        },
+        {
+          "feature_set_to_mean": "pitlane_start",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -0.0971,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.360629,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004547
+        },
+        {
+          "feature_set_to_mean": "no_quali_time",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -0.1435,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.360629,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004654
+        },
+        {
+          "feature_set_to_mean": "is_sprint_weekend",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -0.5393,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.360629,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004593
+        },
+        {
+          "feature_set_to_mean": "quali_gap_pct",
+          "ver_actual_brazil_value": 5.1795,
+          "ver_actual_z_score": 2.1072,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.228522,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004256
+        },
+        {
+          "feature_set_to_mean": "teammate_quali_delta",
+          "ver_actual_brazil_value": 2.3171,
+          "ver_actual_z_score": 3.2041,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.535592,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004001
+        },
+        {
+          "feature_set_to_mean": "driver_form_3",
+          "ver_actual_brazil_value": 1.6667,
+          "ver_actual_z_score": -1.913,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.102782,
+          "lr_raw_podium_prob_when_set_to_mean": 0.002139
+        },
+        {
+          "feature_set_to_mean": "team_form_3",
+          "ver_actual_brazil_value": 5.5,
+          "ver_actual_z_score": -1.2124,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.058013,
+          "lr_raw_podium_prob_when_set_to_mean": 0.002542
+        },
+        {
+          "feature_set_to_mean": "team_dnf_rate_5",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -1.1208,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.193384,
+          "lr_raw_podium_prob_when_set_to_mean": 0.005073
+        },
+        {
+          "feature_set_to_mean": "is_new_driver_or_team",
+          "ver_actual_brazil_value": 0.0,
+          "ver_actual_z_score": -0.1184,
+          "hgb_raw_podium_prob_when_set_to_mean": 0.360629,
+          "lr_raw_podium_prob_when_set_to_mean": 0.004667
+        }
+      ],
+      "key_proof_finding": "When Verstappen's grid_pos is improved from P21 (z=+1.79) to the series average P10.5 (z=0.0), HGB's raw podium probability DROPS from 36.06% to 25.12%. When his quali_gap_pct is improved from +5.18% (z=+1.69) to average (z=0.0), HGB's raw podium probability DROPS from 36.06% to 22.85%. Conversely, setting driver_form_3 from 1.67 (z=-1.65) to average drops HGB raw probability from 36.06% to 1.64%. Thus, 40.2% is an unconstrained tree-split artifact, whereas LogisticRegression (0.61%) and RidgeCV (Expected Pos 12.01) preserve monotonic penalty scaling."
+    },
+    "audit_verdict_on_famous_recoveries_claim": {
+      "russia_2021_r15": {
+        "quali_pos": 18.0,
+        "grid_pos": 20.0,
+        "FinishPosition": 2,
+        "driver_form_3": 6.6667,
+        "note": "Started P20 and finished P2, but his rolling 3-race form entering Russia 2021 was 6.67 (due to Silverstone & Monza crashes), NOT <= 2.0, so it was not in the elite-form leaf."
+      },
+      "belgium_2022_r14": {
+        "quali_pos": 1.0,
+        "grid_pos": 13.0,
+        "FinishPosition": 1,
+        "driver_form_3": 1.3333,
+        "note": "Won from Grid P13 (raw P14) with driver_form_3 = 1.33, but he qualified P1 fastest (quali_pos=1.0, quali_gap_pct=0.0%), unlike Brazil 2026 where he qualified P16 (+5.18% gap)."
+      },
+      "brazil_2024_r21": {
+        "quali_pos": 10.0,
+        "grid_pos": 15.0,
+        "FinishPosition": 1,
+        "driver_form_3": 3.6667,
+        "note": "Won from Grid P15 (raw P17), but driver_form_3 was 3.67 and quali_pos was 10.0."
+      },
+      "brazil_2025_r21": {
+        "quali_pos": 16.0,
+        "grid_pos": 19.0,
+        "FinishPosition": 3,
+        "driver_form_3": 2.0,
+        "note": "Closest actual match in the training set: Verstappen qualified P16, started P19 with driver_form_3 = 2.00, and finished P3."
+      },
+      "empirical_base_rate_in_training_data": "Across all 2,676 driver-starts (133 races), there are 8 instances of a driver starting Grid P14 or worse with driver_form_3 <= 2.5. Only 2 of 8 (25.0%) finished on the podium: 2025 R21 VER (Grid 19 -> P3) and 2026 R13 ANT (Grid 16 -> P1)."
+    }
+  },
+  "verstappen_all_historical_starts_from_grid_10_or_worse": [
+    {
+      "Year": 2021,
+      "Round": 15,
+      "EventName": "Russian Grand Prix",
+      "quali_pos": 20.0,
+      "quali_gap_pct": 7.0,
+      "grid_pos": 20.0,
+      "FinishPosition": 2.0,
+      "driver_form_3": 6.6666666667,
+      "team_form_3": 8.6666666667
+    },
+    {
+      "Year": 2022,
+      "Round": 13,
+      "EventName": "Hungarian Grand Prix",
+      "quali_pos": 10.0,
+      "quali_gap_pct": 0.4213138271,
+      "grid_pos": 10.0,
+      "FinishPosition": 1.0,
+      "driver_form_3": 3.3333333333,
+      "team_form_3": 6.0
+    },
+    {
+      "Year": 2022,
+      "Round": 14,
+      "EventName": "Belgian Grand Prix",
+      "quali_pos": 1.0,
+      "quali_gap_pct": 0.0,
+      "grid_pos": 13.0,
+      "FinishPosition": 1.0,
+      "driver_form_3": 1.3333333333,
+      "team_form_3": 5.5
+    },
+    {
+      "Year": 2023,
+      "Round": 2,
+      "EventName": "Saudi Arabian Grand Prix",
+      "quali_pos": 15.0,
+      "quali_gap_pct": 0.5619441455,
+      "grid_pos": 15.0,
+      "FinishPosition": 2.0,
+      "driver_form_3": 2.6666666667,
+      "team_form_3": 3.3333333333
+    },
+    {
+      "Year": 2023,
+      "Round": 15,
+      "EventName": "Singapore Grand Prix",
+      "quali_pos": 11.0,
+      "quali_gap_pct": 1.3068231777,
+      "grid_pos": 11.0,
+      "FinishPosition": 5.0,
+      "driver_form_3": 1.0,
+      "team_form_3": 1.8333333333
+    },
+    {
+      "Year": 2024,
+      "Round": 14,
+      "EventName": "Belgian Grand Prix",
+      "quali_pos": 1.0,
+      "quali_gap_pct": 0.0,
+      "grid_pos": 11.0,
+      "FinishPosition": 4.0,
+      "driver_form_3": 4.0,
+      "team_form_3": 7.1666666667
+    },
+    {
+      "Year": 2024,
+      "Round": 21,
+      "EventName": "S\u00e3o Paulo Grand Prix",
+      "quali_pos": 10.0,
+      "quali_gap_pct": 5.2346981596,
+      "grid_pos": 15.0,
+      "FinishPosition": 1.0,
+      "driver_form_3": 3.6666666667,
+      "team_form_3": 7.5
+    },
+    {
+      "Year": 2025,
+      "Round": 21,
+      "EventName": "S\u00e3o Paulo Grand Prix",
+      "quali_pos": 16.0,
+      "quali_gap_pct": 1.2832501331,
+      "grid_pos": 19.0,
+      "FinishPosition": 3.0,
+      "driver_form_3": 2.0,
+      "team_form_3": 6.0
+    },
+    {
+      "Year": 2026,
+      "Round": 1,
+      "EventName": "Australian Grand Prix",
+      "quali_pos": 18.0,
+      "quali_gap_pct": 7.0,
+      "grid_pos": 18.0,
+      "FinishPosition": 6.0,
+      "driver_form_3": 1.0,
+      "team_form_3": 6.5
+    },
+    {
+      "Year": 2026,
+      "Round": 3,
+      "EventName": "Japanese Grand Prix",
+      "quali_pos": 11.0,
+      "quali_gap_pct": 1.6715853027,
+      "grid_pos": 11.0,
+      "FinishPosition": 8.0,
+      "driver_form_3": 7.6666666667,
+      "team_form_3": 10.8333333333
+    }
+  ],
+  "all_historical_drivers_with_form_le_2_5_and_grid_ge_14": [
+    {
+      "Year": 2022,
+      "Round": 2,
+      "EventName": "Saudi Arabian Grand Prix",
+      "Driver": "HAM",
+      "TeamName": "Mercedes",
+      "quali_pos": 15.0,
+      "quali_gap_pct": 2.4297052154,
+      "grid_pos": 15.0,
+      "FinishPosition": 10.0,
+      "driver_form_3": 2.0,
+      "team_form_3": 3.1666666667
+    },
+    {
+      "Year": 2023,
+      "Round": 3,
+      "EventName": "Australian Grand Prix",
+      "Driver": "PER",
+      "TeamName": "Red Bull",
+      "quali_pos": 20.0,
+      "quali_gap_pct": 7.0,
+      "grid_pos": 20.0,
+      "FinishPosition": 5.0,
+      "driver_form_3": 2.0,
+      "team_form_3": 1.6666666667
+    },
+    {
+      "Year": 2023,
+      "Round": 19,
+      "EventName": "Mexico City Grand Prix",
+      "Driver": "NOR",
+      "TeamName": "McLaren",
+      "quali_pos": 18.0,
+      "quali_gap_pct": 5.6864422155,
+      "grid_pos": 16.0,
+      "FinishPosition": 5.0,
+      "driver_form_3": 2.3333333333,
+      "team_form_3": 4.8333333333
+    },
+    {
+      "Year": 2024,
+      "Round": 15,
+      "EventName": "Dutch Grand Prix",
+      "Driver": "HAM",
+      "TeamName": "Mercedes",
+      "quali_pos": 12.0,
+      "quali_gap_pct": 1.8299771791,
+      "grid_pos": 14.0,
+      "FinishPosition": 8.0,
+      "driver_form_3": 1.6666666667,
+      "team_form_3": 8.6666666667
+    },
+    {
+      "Year": 2025,
+      "Round": 21,
+      "EventName": "S\u00e3o Paulo Grand Prix",
+      "Driver": "VER",
+      "TeamName": "Red Bull",
+      "quali_pos": 16.0,
+      "quali_gap_pct": 1.2832501331,
+      "grid_pos": 19.0,
+      "FinishPosition": 3.0,
+      "driver_form_3": 2.0,
+      "team_form_3": 6.0
+    },
+    {
+      "Year": 2026,
+      "Round": 1,
+      "EventName": "Australian Grand Prix",
+      "Driver": "VER",
+      "TeamName": "Red Bull",
+      "quali_pos": 18.0,
+      "quali_gap_pct": 7.0,
+      "grid_pos": 18.0,
+      "FinishPosition": 6.0,
+      "driver_form_3": 1.0,
+      "team_form_3": 6.5
+    },
+    {
+      "Year": 2026,
+      "Round": 13,
+      "EventName": "Italian Grand Prix",
+      "Driver": "ANT",
+      "TeamName": "Mercedes",
+      "quali_pos": 7.0,
+      "quali_gap_pct": 0.1173795026,
+      "grid_pos": 19.0,
+      "FinishPosition": 1.0,
+      "driver_form_3": 2.0,
+      "team_form_3": 6.3333333333
+    },
+    {
+      "Year": 2026,
+      "Round": 15,
+      "EventName": "Azerbaijan Grand Prix",
+      "Driver": "ANT",
+      "TeamName": "Mercedes",
+      "quali_pos": 16.0,
+      "quali_gap_pct": 2.9046290697,
+      "grid_pos": 16.0,
+      "FinishPosition": 5.0,
+      "driver_form_3": 1.3333333333,
+      "team_form_3": 2.3333333333
+    }
+  ],
+  "verstappen_2026_season_race_log": [
+    {
+      "Year": 2026,
+      "Round": 1,
+      "EventName": "Australian Grand Prix",
+      "quali_pos": 18.0,
+      "grid_pos": 18.0,
+      "FinishPosition": 6.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 1.0,
+      "team_form_3": 6.5
+    },
+    {
+      "Year": 2026,
+      "Round": 2,
+      "EventName": "Chinese Grand Prix",
+      "quali_pos": 6.0,
+      "grid_pos": 6.0,
+      "FinishPosition": 16.0,
+      "Status": "Retired",
+      "is_dnf": 1,
+      "driver_form_3": 2.6666666667,
+      "team_form_3": 8.6666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 3,
+      "EventName": "Japanese Grand Prix",
+      "quali_pos": 11.0,
+      "grid_pos": 11.0,
+      "FinishPosition": 8.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 7.6666666667,
+      "team_form_3": 10.8333333333
+    },
+    {
+      "Year": 2026,
+      "Round": 4,
+      "EventName": "Miami Grand Prix",
+      "quali_pos": 2.0,
+      "grid_pos": 2.0,
+      "FinishPosition": 5.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 10.0,
+      "team_form_3": 11.6666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 5,
+      "EventName": "Canadian Grand Prix",
+      "quali_pos": 6.0,
+      "grid_pos": 6.0,
+      "FinishPosition": 3.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 9.6666666667,
+      "team_form_3": 11.8333333333
+    },
+    {
+      "Year": 2026,
+      "Round": 6,
+      "EventName": "Monaco Grand Prix",
+      "quali_pos": 2.0,
+      "grid_pos": 2.0,
+      "FinishPosition": 22.0,
+      "Status": "Retired",
+      "is_dnf": 1,
+      "driver_form_3": 5.3333333333,
+      "team_form_3": 9.1666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 7,
+      "EventName": "Barcelona Grand Prix",
+      "quali_pos": 5.0,
+      "grid_pos": 5.0,
+      "FinishPosition": 4.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 10.0,
+      "team_form_3": 10.0
+    },
+    {
+      "Year": 2026,
+      "Round": 8,
+      "EventName": "Austrian Grand Prix",
+      "quali_pos": 5.0,
+      "grid_pos": 5.0,
+      "FinishPosition": 2.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 9.6666666667,
+      "team_form_3": 7.1666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 9,
+      "EventName": "British Grand Prix",
+      "quali_pos": 7.0,
+      "grid_pos": 7.0,
+      "FinishPosition": 20.0,
+      "Status": "Retired",
+      "is_dnf": 1,
+      "driver_form_3": 9.3333333333,
+      "team_form_3": 7.1666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 10,
+      "EventName": "Belgian Grand Prix",
+      "quali_pos": 2.0,
+      "grid_pos": 2.0,
+      "FinishPosition": 3.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 8.6666666667,
+      "team_form_3": 7.1666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 11,
+      "EventName": "Hungarian Grand Prix",
+      "quali_pos": 6.0,
+      "grid_pos": 4.0,
+      "FinishPosition": 2.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 8.3333333333,
+      "team_form_3": 7.0
+    },
+    {
+      "Year": 2026,
+      "Round": 12,
+      "EventName": "Dutch Grand Prix",
+      "quali_pos": 7.0,
+      "grid_pos": 7.0,
+      "FinishPosition": 22.0,
+      "Status": "Retired",
+      "is_dnf": 1,
+      "driver_form_3": 8.3333333333,
+      "team_form_3": 7.0
+    },
+    {
+      "Year": 2026,
+      "Round": 13,
+      "EventName": "Italian Grand Prix",
+      "quali_pos": 6.0,
+      "grid_pos": 5.0,
+      "FinishPosition": 3.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 9.0,
+      "team_form_3": 7.6666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 14,
+      "EventName": "Spanish Grand Prix",
+      "quali_pos": 3.0,
+      "grid_pos": 3.0,
+      "FinishPosition": 2.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 9.0,
+      "team_form_3": 9.0
+    },
+    {
+      "Year": 2026,
+      "Round": 15,
+      "EventName": "Azerbaijan Grand Prix",
+      "quali_pos": 8.0,
+      "grid_pos": 8.0,
+      "FinishPosition": 2.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 9.0,
+      "team_form_3": 9.0
+    },
+    {
+      "Year": 2026,
+      "Round": 16,
+      "EventName": "Bahrain Grand Prix",
+      "quali_pos": 1.0,
+      "grid_pos": 1.0,
+      "FinishPosition": 1.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 2.3333333333,
+      "team_form_3": 5.0
+    },
+    {
+      "Year": 2026,
+      "Round": 17,
+      "EventName": "Singapore Grand Prix",
+      "quali_pos": 1.0,
+      "grid_pos": 1.0,
+      "FinishPosition": 1.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 1.6666666667,
+      "team_form_3": 3.1666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 18,
+      "EventName": "United States Grand Prix",
+      "quali_pos": 2.0,
+      "grid_pos": 2.0,
+      "FinishPosition": 3.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 1.3333333333,
+      "team_form_3": 3.6666666667
+    },
+    {
+      "Year": 2026,
+      "Round": 19,
+      "EventName": "Mexico City Grand Prix",
+      "quali_pos": 4.0,
+      "grid_pos": 5.0,
+      "FinishPosition": 1.0,
+      "Status": "Finished",
+      "is_dnf": 0,
+      "driver_form_3": 1.6666666667,
+      "team_form_3": 4.3333333333
+    }
+  ]
+}
